@@ -7,18 +7,18 @@ class SettingsTab:
     def __init__(self, parent_tab, app_instance):
         self.tab = parent_tab
         self.app = app_instance
-        
+
         # --- INIT VARS ---
         self.entry_chrome = None
         self.current_cat = None
         self.current_sub = None
         self.detected_page_name = None
-        
+
         self.cat_buttons = {}
         self.sub_buttons = {}
-        self.all_cats = [] 
-        self.all_subs = [] 
-        
+        self.all_cats = []
+        self.all_subs = []
+
         self.setup_ui()
 
     def setup_ui(self):
@@ -36,7 +36,7 @@ class SettingsTab:
         self.entry_filter_cat.bind("<KeyRelease>", self.on_filter_cat)
         self.lst_cats = ctk.CTkScrollableFrame(f_cat)
         self.lst_cats.pack(fill="both", expand=True, padx=5, pady=5)
-        
+
         self.create_crud_buttons(f_cat, "CAT")
 
         # --- COL 2: NGÁCH ---
@@ -48,17 +48,17 @@ class SettingsTab:
         self.entry_filter_sub.bind("<KeyRelease>", self.on_filter_sub)
         self.lst_subs = ctk.CTkScrollableFrame(f_sub)
         self.lst_subs.pack(fill="both", expand=True, padx=5, pady=5)
-        
+
         self.create_crud_buttons(f_sub, "SUB")
 
         # --- COL 3: NỘI DUNG ---
         f_conf = ctk.CTkFrame(self.tab)
         f_conf.grid(row=0, column=2, sticky="nsew", padx=5, pady=5)
-        
+
         # 1. Header (Fanpage info)
         self.lbl_conf = ctk.CTkLabel(f_conf, text="3. NỘI DUNG", font=("Arial", 14, "bold"), text_color="gray")
         self.lbl_conf.pack(pady=(5,0))
-        
+
         f_fp_mgr = ctk.CTkFrame(f_conf, fg_color="transparent")
         f_fp_mgr.pack(fill="x", padx=5, pady=2)
         ctk.CTkLabel(f_fp_mgr, text="FANPAGE:", width=70, anchor="w").pack(side="left")
@@ -81,13 +81,13 @@ class SettingsTab:
         # 2. Scrollable Content
         self.scroll_content = ctk.CTkScrollableFrame(f_conf, fg_color="transparent")
         self.scroll_content.pack(fill="both", expand=True, padx=5, pady=5)
-        
+
         self.t_fomo = self.create_box(self.scroll_content, "TIÊU ĐỀ FOMO:", 50, "Mỗi tiêu đề 1 dòng...")
         self.t_aff = self.create_box(self.scroll_content, "LINK AFFILIATE:", 40, "Mỗi link 1 dòng...")
         self.t_tag = self.create_box(self.scroll_content, "HASHTAGS:", 40, "#Tag1, #Tag2...")
-        
+
         ctk.CTkLabel(self.scroll_content, text="CAPTIONS:", text_color="cyan").pack(anchor="w", padx=5, pady=(5,0))
-        self.t_cap = ctk.CTkTextbox(self.scroll_content, height=120) 
+        self.t_cap = ctk.CTkTextbox(self.scroll_content, height=120)
         self.t_cap.pack(fill="both", expand=True, padx=5, pady=(0, 5))
         self.t_cap.insert("1.0", "Nội dung mô tả...")
         self.t_cap.bind("<FocusIn>", lambda e: self.t_cap.delete("1.0", "end") if "Nội dung" in self.t_cap.get("1.0", "end-1c") else None)
@@ -98,18 +98,18 @@ class SettingsTab:
         # --- SYSTEM (ROW 1) ---
         f_sys = ctk.CTkFrame(self.tab, height=50, fg_color="#222")
         f_sys.grid(row=1, column=0, columnspan=3, sticky="ew", padx=5, pady=5)
-        
+
         ctk.CTkLabel(f_sys, text="Chrome Profile:", font=("Arial", 12, "bold")).pack(side="left", padx=10)
         self.entry_chrome = ctk.CTkEntry(f_sys, width=350)
         self.entry_chrome.pack(side="left", padx=5)
         full_path = os.path.join(self.app.settings.get("chrome_user_data", ""), self.app.settings.get("chrome_profile", ""))
         self.entry_chrome.insert(0, full_path)
         self.entry_chrome.configure(state="disabled")
-        
+
         ctk.CTkButton(f_sys, text="📂 CHỌN PROFILE", width=120, command=self.browse_chrome_profile, fg_color="#555").pack(side="left", padx=5)
         self.btn_get_cookie = ctk.CTkButton(f_sys, text="ĐĂNG NHẬP TIKTOK", command=self.get_cookie_action, width=150, fg_color="#E67E22")
         self.btn_get_cookie.pack(side="right", padx=10)
-        
+
         self.update_cookie_btn_state()
         self.refresh_fanpage_combo()
 
@@ -124,18 +124,27 @@ class SettingsTab:
         return tb
 
     def create_crud_buttons(self, parent, type_item):
-        f = ctk.CTkFrame(parent, fg_color="transparent")
-        f.pack(fill="x", pady=5)
-        ctk.CTkButton(f, text="THÊM", width=50, command=lambda: self.add_item(type_item), fg_color="green").pack(side="left", fill="x", expand=True, padx=1)
-        ctk.CTkButton(f, text="XÓA", width=50, command=lambda: self.delete_item(type_item), fg_color="red").pack(side="left", fill="x", expand=True, padx=1)
-        ctk.CTkButton(f, text="IMPORT", width=50, command=lambda: self.import_txt(type_item), fg_color="gray").pack(side="left", fill="x", expand=True, padx=1)
+        # [UPDATED] Thêm ô nhập liệu thủ công phía trên
+        f_input = ctk.CTkFrame(parent, fg_color="transparent")
+        f_input.pack(fill="x", pady=(5, 0))
+        entry_manual = ctk.CTkEntry(f_input, placeholder_text=f"Nhập tên {type_item} mới...")
+        entry_manual.pack(fill="x", padx=5)
 
-    # --- [NEW] IMPLEMENT ADD/DELETE/IMPORT ---
-    def add_item(self, type_item):
-        name = simpledialog.askstring("Thêm Mới", f"Nhập tên {type_item}:")
-        if not name or not name.strip(): return
-        name = name.strip()
-        
+        f_btns = ctk.CTkFrame(parent, fg_color="transparent")
+        f_btns.pack(fill="x", pady=5)
+
+        # [UPDATED] Nút THÊM gọi hàm add_item_manual thay vì popup dialog
+        ctk.CTkButton(f_btns, text="THÊM", width=50, command=lambda: self.add_item_manual(type_item, entry_manual), fg_color="green").pack(side="left", fill="x", expand=True, padx=1)
+        ctk.CTkButton(f_btns, text="XÓA", width=50, command=lambda: self.delete_item(type_item), fg_color="red").pack(side="left", fill="x", expand=True, padx=1)
+        ctk.CTkButton(f_btns, text="IMPORT", width=50, command=lambda: self.import_txt(type_item), fg_color="gray").pack(side="left", fill="x", expand=True, padx=1)
+
+    # [NEW] Hàm thêm item từ textbox nhập tay
+    def add_item_manual(self, type_item, entry_widget):
+        name = entry_widget.get().strip()
+        if not name:
+            messagebox.showwarning("!", "Vui lòng nhập tên!")
+            return
+
         if type_item == "CAT":
             if name in self.app.settings["categories"]:
                 messagebox.showerror("Lỗi", "Danh mục đã tồn tại!")
@@ -143,7 +152,7 @@ class SettingsTab:
             self.app.settings["categories"][name] = {"sub_categories": {}}
             self.app.save_settings()
             self.refresh_cat_list_ui()
-            
+
         elif type_item == "SUB":
             if not self.current_cat:
                 messagebox.showwarning("!", "Vui lòng chọn Danh mục trước!")
@@ -151,13 +160,15 @@ class SettingsTab:
             if name in self.app.settings["categories"][self.current_cat]["sub_categories"]:
                 messagebox.showerror("Lỗi", "Ngách đã tồn tại!")
                 return
-            # Tạo sub mới với cấu hình rỗng
             self.app.settings["categories"][self.current_cat]["sub_categories"][name] = {
-                "page_id": "", "access_token": "", 
+                "page_id": "", "access_token": "",
                 "fomo_titles": [], "affiliate_links": [], "hashtags": [], "captions": []
             }
             self.app.save_settings()
             self.refresh_sub_list_ui()
+
+        # Xóa text sau khi thêm thành công
+        entry_widget.delete(0, "end")
 
     def delete_item(self, type_item):
         if type_item == "CAT":
@@ -168,7 +179,7 @@ class SettingsTab:
             self.app.save_settings()
             self.refresh_cat_list_ui()
             self.render_sub_list([]) # Clear sub list
-            
+
         elif type_item == "SUB":
             if not self.current_cat or not self.current_sub: return
             if not messagebox.askyesno("Xác nhận", f"Xóa ngách '{self.current_sub}'?"): return
@@ -181,11 +192,11 @@ class SettingsTab:
     def import_txt(self, type_item):
         path = filedialog.askopenfilename(filetypes=[("Text", "*.txt")])
         if not path: return
-        
+
         try:
             with open(path, "r", encoding="utf-8") as f:
                 lines = [l.strip() for l in f.readlines() if l.strip()]
-                
+
             count = 0
             if type_item == "CAT":
                 for l in lines:
@@ -195,7 +206,7 @@ class SettingsTab:
                 if count > 0:
                     self.app.save_settings()
                     self.refresh_cat_list_ui()
-                    
+
             elif type_item == "SUB":
                 if not self.current_cat: messagebox.showwarning("!", "Chọn danh mục trước!"); return
                 for l in lines:
@@ -207,14 +218,14 @@ class SettingsTab:
                 if count > 0:
                     self.app.save_settings()
                     self.refresh_sub_list_ui()
-            
+
             messagebox.showinfo("Thành công", f"Đã nhập {count} mục mới.")
         except Exception as e:
             messagebox.showerror("Lỗi", str(e))
 
     # --- CHROME & COOKIE ---
     def browse_chrome_profile(self):
-        p = filedialog.askdirectory(title="Chọn thư mục Profile", 
+        p = filedialog.askdirectory(title="Chọn thư mục Profile",
                                     initialdir=os.path.expandvars(r'%LOCALAPPDATA%\Google\Chrome\User Data'))
         if p:
             user_data_dir = os.path.dirname(p)
@@ -246,44 +257,54 @@ class SettingsTab:
     def verify_fanpage_connection(self):
         pid = self.e_pid.get().strip(); tok = self.e_tok.get().strip()
         if not pid or not tok: messagebox.showwarning("!", "Thiếu ID hoặc Token"); return
-        ok, name, _ = self.app.backend.check_api_token(pid, tok)
-        if ok: self.detected_page_name = name; messagebox.showinfo("OK", f"✅ Fanpage: {name}\n(Bấm 'LƯU CẤU HÌNH' để lưu)")
-        else: self.detected_page_name = None; messagebox.showerror("Lỗi", name)
-        
+
+        # [NOTE] Hàm check_api_token đã được thêm vào backend/manager.py ở bước trước.
+        # Đảm bảo bạn đã update file manager.py mới nhất.
+        try:
+            ok, name, _ = self.app.backend.check_api_token(pid, tok)
+            if ok:
+                self.detected_page_name = name
+                messagebox.showinfo("OK", f"✅ Fanpage: {name}\n(Bấm 'LƯU CẤU HÌNH' để lưu)")
+            else:
+                self.detected_page_name = None
+                messagebox.showerror("Lỗi", name)
+        except AttributeError:
+            messagebox.showerror("Lỗi", "Backend chưa cập nhật! Vui lòng update file manager.py")
+
     def on_load_fanpage(self, name):
         if name in self.app.settings.get("saved_fanpages", {}):
             d = self.app.settings["saved_fanpages"][name]
             self.e_pid.delete(0, "end"); self.e_pid.insert(0, d["page_id"])
             self.e_tok.delete(0, "end"); self.e_tok.insert(0, d["access_token"])
-            
+
     def save_current_sub_config(self):
         if not self.current_cat or not self.current_sub: return
         d = self.app.settings["categories"][self.current_cat]["sub_categories"][self.current_sub]
         pid = self.e_pid.get().strip(); tok = self.e_tok.get().strip()
         d["page_id"] = pid; d["access_token"] = tok
-        
-        def gv(tb, ph): 
+
+        def gv(tb, ph):
             val = tb.get("1.0", "end-1c")
             return [] if val.strip() == ph.strip() else [x.strip() for x in val.split("\n") if x.strip()]
-            
+
         d["fomo_titles"] = gv(self.t_fomo, "Mỗi tiêu đề...")
         d["affiliate_links"] = gv(self.t_aff, "Mỗi link...")
         d["hashtags"] = gv(self.t_tag, "#Tag...")
         d["captions"] = gv(self.t_cap, "Nội dung...")
-        
+
         if pid and tok and self.detected_page_name:
             if "saved_fanpages" not in self.app.settings: self.app.settings["saved_fanpages"] = {}
             self.app.settings["saved_fanpages"][self.detected_page_name] = {"page_id": pid, "access_token": tok}
             self.refresh_fanpage_combo(); self.detected_page_name = None
-        
+
         self.app.save_settings() # Lưu ra file
         self.lbl_conf.configure(text=f"ĐÃ LƯU: {self.current_sub}", text_color="green")
-    
+
     # --- LIST UI ---
     def refresh_cat_list_ui(self):
         self.all_cats = list(self.app.settings["categories"].keys())
         self.render_cat_list(self.all_cats)
-        
+
     def render_cat_list(self, cats):
         for w in self.lst_cats.winfo_children(): w.destroy()
         self.cat_buttons = {}
@@ -291,23 +312,23 @@ class SettingsTab:
             btn = ctk.CTkButton(self.lst_cats, text=cat, fg_color="transparent", border_width=1, anchor="w", command=lambda c=cat: self.on_select_cat(c))
             btn.pack(fill="x", pady=1)
             self.cat_buttons[cat] = btn
-            
+
     def on_filter_cat(self, event):
         k = self.entry_filter_cat.get().lower()
         self.render_cat_list([c for c in self.all_cats if k in c.lower()])
-        
+
     def on_select_cat(self, cat):
         self.current_cat = cat; self.current_sub = None
         self.toggle_config_inputs(False)
-        for c, b in self.cat_buttons.items(): 
+        for c, b in self.cat_buttons.items():
             b.configure(fg_color=("#3B8ED0", "#1F6AA5") if c == cat else "transparent")
         self.refresh_sub_list_ui()
-        
+
     def refresh_sub_list_ui(self):
         if not self.current_cat: return
         self.all_subs = list(self.app.settings["categories"][self.current_cat]["sub_categories"].keys())
         self.render_sub_list(self.all_subs)
-        
+
     def render_sub_list(self, subs):
         for w in self.lst_subs.winfo_children(): w.destroy()
         self.sub_buttons = {}
@@ -315,42 +336,42 @@ class SettingsTab:
             btn = ctk.CTkButton(self.lst_subs, text=sub, fg_color="transparent", border_width=1, anchor="w", command=lambda s=sub: self.on_select_sub(s))
             btn.pack(fill="x", pady=1)
             self.sub_buttons[sub] = btn
-            
+
     def on_filter_sub(self, event):
         k = self.entry_filter_sub.get().lower()
         self.render_sub_list([s for s in self.all_subs if k in s.lower()])
-        
+
     def toggle_config_inputs(self, enable):
         st = "normal" if enable else "disabled"
         for w in [self.e_pid, self.e_tok, self.t_fomo, self.t_aff, self.t_tag, self.t_cap]: w.configure(state=st)
         if not enable: self.lbl_conf.configure(text="CHỌN NGÁCH ĐỂ SỬA", text_color="gray")
-        
+
     def on_select_sub(self, sub):
         self.current_sub = sub
         self.toggle_config_inputs(True)
-        for s, b in self.sub_buttons.items(): 
+        for s, b in self.sub_buttons.items():
             b.configure(fg_color=("#3B8ED0", "#1F6AA5") if s == sub else "transparent")
-            
+
         d = self.app.settings["categories"][self.current_cat]["sub_categories"][sub]
-        
+
         curr_pid = d.get("page_id", "")
         self.e_pid.delete(0, "end"); self.e_pid.insert(0, curr_pid)
-        
+
         self.e_tok.delete(0, "end"); self.e_tok.insert(0, d.get("access_token", ""))
-        
+
         found_name = "Chọn Facebook fanpage"
         for name, data in self.app.settings.get("saved_fanpages", {}).items():
             if data["page_id"] == curr_pid: found_name = name; break
         self.combo_fp.set(found_name)
-        
+
         def load_tb(tb, val, ph):
             tb.delete("1.0", "end")
             tb.insert("1.0", "\n".join(val) if val else ph)
             tb.configure(text_color="white" if val else "silver")
-            
+
         load_tb(self.t_fomo, d.get("fomo_titles", []), "Mỗi tiêu đề...")
         load_tb(self.t_aff, d.get("affiliate_links", []), "Mỗi link...")
         load_tb(self.t_tag, d.get("hashtags", []), "#Tag...")
         load_tb(self.t_cap, d.get("captions", []), "Nội dung...")
-        
+
         self.lbl_conf.configure(text=f"ĐANG SỬA: {self.current_sub}", text_color="yellow")

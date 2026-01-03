@@ -1,107 +1,61 @@
 import customtkinter as ctk
-from tkinter import filedialog, Canvas
-from PIL import Image, ImageTk
-import os
+from tkinter import messagebox
 
 class EditConfigDialog(ctk.CTkToplevel):
     def __init__(self, parent, callback):
         super().__init__(parent)
         self.callback = callback
-        self.title("Cấu hình & Vị trí Logo")
-        self.geometry("500x700")
+        self.title("Cấu hình & Anti-Fingerprint")
+        self.geometry("450x600")
         self.resizable(False, False)
-        
-        # [FIX] Đưa form lên trên cùng để không bị che
+
+        # [FIX] Center Window
+        self.update_idletasks()
+        width = self.winfo_width()
+        height = self.winfo_height()
+        x = (self.winfo_screenwidth() // 2) - (width // 2)
+        y = (self.winfo_screenheight() // 2) - (height // 2)
+        self.geometry(f'{width}x{height}+{x}+{y}')
+
         self.attributes("-topmost", True)
-        self.grab_set() 
-        self.focus_force()
+        self.grab_set()
 
-        self.logo_path = None
-        # Vị trí logo mặc định (tương đối 0.0 - 1.0)
-        self.logo_rel_x = 0.8
-        self.logo_rel_y = 0.1
-        self.preview_width = 400
-        self.preview_height = 225 # Tỷ lệ 16:9
+        # --- UI ---
+        ctk.CTkLabel(self, text="CẤU HÌNH CHỈNH SỬA", font=("Arial", 16, "bold")).pack(pady=10)
 
-        # Scroll frame
-        self.scroll = ctk.CTkScrollableFrame(self)
-        self.scroll.pack(fill="both", expand=True, padx=10, pady=10)
-
-        # 1. PREVIEW KÉO THẢ LOGO
-        ctk.CTkLabel(self.scroll, text="📍 KÉO THẢ ĐIỂM ĐỎ ĐỂ CHỈNH VỊ TRÍ LOGO", text_color="orange", font=("Arial", 12, "bold")).pack(pady=5)
-        
-        # Canvas mô phỏng
-        self.canvas = Canvas(self.scroll, width=self.preview_width, height=self.preview_height, bg="black", highlightthickness=0)
-        self.canvas.pack(pady=5)
-        
-        # Vẽ khung video giả lập
-        self.canvas.create_text(self.preview_width/2, self.preview_height/2, text="VIDEO PREVIEW AREA", fill="#333", font=("Arial", 16))
-        
-        # Vẽ điểm logo (Đại diện)
-        self.logo_dot = self.canvas.create_oval(0, 0, 20, 20, fill="red", outline="white", width=2)
-        self.update_canvas_dot()
-
-        # Bind sự kiện kéo thả
-        self.canvas.tag_bind(self.logo_dot, "<B1-Motion>", self.on_drag_logo)
-
-        # 2. CÁC THÔNG SỐ KHÁC
-        ctk.CTkLabel(self.scroll, text="--- CÀI ĐẶT ---", font=("Arial", 14, "bold")).pack(pady=10)
-
-        # Speed
-        f_speed = ctk.CTkFrame(self.scroll, fg_color="transparent")
-        f_speed.pack(fill="x", pady=2)
-        ctk.CTkLabel(f_speed, text="Tốc độ:").pack(side="left")
-        self.lbl_speed = ctk.CTkLabel(f_speed, text="1.05x", text_color="cyan")
+        # 1. Speed
+        f1 = ctk.CTkFrame(self, fg_color="transparent"); f1.pack(fill="x", padx=20, pady=5)
+        ctk.CTkLabel(f1, text="Tốc độ (Speed):").pack(side="left")
+        self.lbl_speed = ctk.CTkLabel(f1, text="1.05x", text_color="cyan")
         self.lbl_speed.pack(side="right")
-        self.slider_speed = ctk.CTkSlider(self.scroll, from_=1.0, to=1.3, number_of_steps=30, command=lambda v: self.lbl_speed.configure(text=f"{round(v,2)}x"))
-        self.slider_speed.set(1.05)
-        self.slider_speed.pack(fill="x", pady=5)
+        self.slider_speed = ctk.CTkSlider(self, from_=1.0, to=1.3, number_of_steps=30,
+                                          command=lambda v: self.lbl_speed.configure(text=f"{round(v,2)}x"))
+        self.slider_speed.set(1.05); self.slider_speed.pack(fill="x", padx=20)
 
-        # Crop
-        ctk.CTkLabel(self.scroll, text="Cắt viền (px):").pack(anchor="w")
-        self.entry_crop = ctk.CTkEntry(self.scroll)
+        # 2. Crop
+        f2 = ctk.CTkFrame(self, fg_color="transparent"); f2.pack(fill="x", padx=20, pady=5)
+        ctk.CTkLabel(f2, text="Cắt viền (px):").pack(side="left")
+        self.entry_crop = ctk.CTkEntry(f2, width=60); self.entry_crop.pack(side="right")
         self.entry_crop.insert(0, "10")
-        self.entry_crop.pack(fill="x", pady=5)
 
-        # Logo Select
-        ctk.CTkLabel(self.scroll, text="File Logo:").pack(anchor="w")
-        self.btn_logo = ctk.CTkButton(self.scroll, text="Chọn ảnh Logo...", command=self.browse_logo, fg_color="#555")
-        self.btn_logo.pack(fill="x", pady=2)
-        self.lbl_logo_name = ctk.CTkLabel(self.scroll, text="Chưa chọn", text_color="gray")
-        self.lbl_logo_name.pack()
+        # 3. Anti-Fingerprint Group
+        ctk.CTkLabel(self, text="--- ANTI-FINGERPRINT ---", font=("Arial", 13, "bold"), text_color="orange").pack(pady=(20, 5))
 
-        # Logo Size
-        ctk.CTkLabel(self.scroll, text="Kích thước Logo (% video):").pack(anchor="w")
-        self.slider_logo_size = ctk.CTkSlider(self.scroll, from_=0.05, to=0.5)
-        self.slider_logo_size.set(0.15)
-        self.slider_logo_size.pack(fill="x", pady=5)
+        # Cut Start/End
+        f3 = ctk.CTkFrame(self, fg_color="transparent"); f3.pack(fill="x", padx=20, pady=2)
+        ctk.CTkLabel(f3, text="Cắt đầu (giây):").pack(side="left")
+        self.e_cut_start = ctk.CTkEntry(f3, width=50); self.e_cut_start.pack(side="right"); self.e_cut_start.insert(0, "0.5")
+
+        f4 = ctk.CTkFrame(self, fg_color="transparent"); f4.pack(fill="x", padx=20, pady=2)
+        ctk.CTkLabel(f4, text="Cắt đuôi (giây):").pack(side="left")
+        self.e_cut_end = ctk.CTkEntry(f4, width=50); self.e_cut_end.pack(side="right"); self.e_cut_end.insert(0, "0.5")
+
+        # Mirror Checkbox
+        self.chk_mirror = ctk.CTkCheckBox(self, text="Lật Video (Mirror X)")
+        self.chk_mirror.pack(pady=10)
 
         # Confirm
-        ctk.CTkButton(self, text="ÁP DỤNG & XỬ LÝ", command=self.on_confirm, height=40, fg_color="green").pack(fill="x", padx=10, pady=10)
-
-    def update_canvas_dot(self):
-        # Chuyển đổi tọa độ tương đối sang tuyệt đối trên canvas
-        x = self.logo_rel_x * self.preview_width
-        y = self.logo_rel_y * self.preview_height
-        r = 10 # Bán kính điểm
-        self.canvas.coords(self.logo_dot, x-r, y-r, x+r, y+r)
-
-    def on_drag_logo(self, event):
-        # Giới hạn trong khung
-        cx = max(0, min(event.x, self.preview_width))
-        cy = max(0, min(event.y, self.preview_height))
-        
-        # Cập nhật tọa độ tương đối
-        self.logo_rel_x = cx / self.preview_width
-        self.logo_rel_y = cy / self.preview_height
-        
-        self.update_canvas_dot()
-
-    def browse_logo(self):
-        p = filedialog.askopenfilename(filetypes=[("Image", "*.png;*.jpg;*.jpeg")])
-        if p:
-            self.logo_path = p
-            self.lbl_logo_name.configure(text=os.path.basename(p), text_color="white")
+        ctk.CTkButton(self, text="ÁP DỤNG & XỬ LÝ", command=self.on_confirm, height=40, fg_color="green").pack(fill="x", padx=20, pady=20)
 
     def on_confirm(self):
         try:
@@ -109,15 +63,11 @@ class EditConfigDialog(ctk.CTkToplevel):
                 "speed": round(self.slider_speed.get(), 2),
                 "crop": int(self.entry_crop.get()),
                 "gamma": 1.1,
-                "mirror": False,
-                "logo_path": self.logo_path,
-                "logo_size": round(self.slider_logo_size.get(), 2),
-                # Truyền tọa độ tùy chỉnh ('custom')
-                "logo_pos": "custom",
-                "logo_x": self.logo_rel_x,
-                "logo_y": self.logo_rel_y
+                "mirror": self.chk_mirror.get(),
+                "cut_start": float(self.e_cut_start.get()),
+                "cut_end": float(self.e_cut_end.get())
             }
             self.destroy()
             self.callback(settings)
         except ValueError:
-            print("Lỗi nhập liệu")
+            messagebox.showerror("Lỗi", "Vui lòng nhập số hợp lệ!")

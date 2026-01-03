@@ -18,6 +18,18 @@ def count_posts_on_date(cat, sub_cat, target_date_str):
                 if date_part == target_date_str: count += 1
     return count
 
+# [NEW] Hàm check token cho Settings Tab
+def check_token_validity(page_id, token):
+    try:
+        url = f"https://graph.facebook.com/v21.0/{page_id}?fields=name,id&access_token={token}"
+        r = requests.get(url)
+        if r.status_code == 200:
+            data = r.json()
+            return True, data.get("name", "Unknown Page"), data.get("id")
+        return False, f"Lỗi {r.status_code}: {r.text}", None
+    except Exception as e:
+        return False, str(e), None
+
 def _api_upload(path, caption, time_pub, page_id, token):
     try:
         base = "https://graph.facebook.com/v21.0"
@@ -47,6 +59,8 @@ def run(settings, specific_times, target_files, cat, sub_cat, config_data, stop_
     hashtags = config_data.get("hashtags", []) or ["#reels"]
     aff_links = config_data.get("affiliate_links", []) or ["https://shopee.vn"]
     fomo_list = config_data.get("fomo_titles", []) or ["🔥 Xem ngay!"]
+
+    # [FIX] Logic lấy giờ: Nếu specific_times là list các mốc giờ tương ứng video
     schedule_list = specific_times if specific_times else []
 
     for i, video_path_str in enumerate(target_files):
@@ -55,24 +69,29 @@ def run(settings, specific_times, target_files, cat, sub_cat, config_data, stop_
         if not video_path.exists(): continue
 
         final_cap = f"{random.choice(fomo_list)}\n\n{random.choice(captions)}\n\n👉 {random.choice(aff_links)}\n\n{' '.join(random.sample(hashtags, min(10, len(hashtags))))}"
+
+        # Lấy giờ tương ứng cho video thứ i
         pub_time = schedule_list[i] if (schedule_list and i < len(schedule_list)) else None
-        
+
         if pub_time:
             now = datetime.now()
+            # Facebook yêu cầu schedule ít nhất trước 10-15p, ta để 20p cho chắc
             if (pub_time - now).total_seconds() < 900:
-                log_func(f"⚠️ Giờ đăng {pub_time.strftime('%H:%M')} quá gần. Đã +20p.")
+                log_func(f"⚠️ Giờ {pub_time.strftime('%H:%M')} quá gần. Đã +20p.")
                 pub_time = now + timedelta(minutes=20)
 
         log_func(f"Upload: {video_path.name}")
         success, api_msg = _api_upload(video_path, final_cap, pub_time, page_id, token)
-        
+
         if success:
             log_func("   ✅ Thành công")
             st_str = "SCHEDULED" if pub_time else "PUBLISHED"
             tm_str = pub_time.strftime("%d/%m %H:%M") if pub_time else datetime.now().strftime("%d/%m %H:%M")
             with paths["history_up"].open("a", encoding="utf-8") as f:
                 f.write(f"{str(video_path)}|{st_str}|{tm_str}\n")
-            if not pub_time and i < len(target_files)-1: 
+
+            # Delay nếu upload ngay (không phải schedule)
+            if not pub_time and i < len(target_files)-1:
                 time.sleep(int(settings.get("upload_delay_minutes", 5)) * 60)
         else:
             log_func(f"   ❌ Thất bại: {api_msg}")
