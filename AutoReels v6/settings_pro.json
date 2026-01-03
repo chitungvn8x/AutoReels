@@ -1,0 +1,293 @@
+{
+    "chrome_user_data": "C:/ChromeProfiles/RecraftBot",
+    "chrome_profile": "Profile 2",
+    "default_download_dir": "C:\\Users\\chitu\\Downloads",
+    "upload_delay_minutes": 5,
+    "current_tiktok_profile": "DarkWords",
+    "categories": {
+        "Phụ Kiện & Trang Sức Nữ": {
+            "sub_categories": {
+                "Nhẫn": {
+                    "page_id": "704325582774613",
+                    "access_token": "EAAaWkIcIQjgBQUbFPfJkTDLWkjxSul4bZAQl3QisAThD0aFYfZCySFZCJ87wkLPkexAQZB7VZAjKHKWNvV6NTFbucWMrEpl6OcDRgDc6LjfkRjqqIa7aBfsjyaJr5FDNoEJClY2L0UBt4dBxABm7ZAxNZA17E3YEidZA36mx6aeHu8c7JmnRD3tMMSkqjclId3lzogbiJZAkyPDobdZC56vCeJiDx9",
+                    "captions": [
+                        "Dành cho \"Chỉ còn 5 bộ\": Không đùa đâu, kho vừa báo số lượng cuối cùng rồi. Chốt đơn ngay tại bio nàng ơi! ⏱️",
+                        "Dành cho \"Chỉ còn 5 bộ\": Đợi đến lúc hết hàng mới hỏi thì tớ cũng đành bó tay. Đặt sớm để kịp diện Tết nhé!",
+                        "Dành cho \"Mẫu quốc dân\": Hơn 1000 đơn đi mỗi ngày là hiểu độ hot rồi đó. Chậm chân là phải đợi thêm 2 tuần nữa mới có hàng về.",
+                        "Dành cho \"Mẫu quốc dân\": Cứ lên kệ là \"bay màu\". Comment \"NHẪN\" để nhận link săn sale nhanh nhất. 💨",
+                        "Dành cho \"Cơ hội cuối\": BST giới hạn, bán hết là đóng khuôn không làm thêm. Đừng để hụt mất rồi tiếc hùi hụi nhé.",
+                        "Dành cho \"Cơ hội cuối\": Chỉ mở bán trong 24h tới. Sau đó giá sẽ quay về mức ban đầu. Chốt ngay! 💸",
+                        "Dành cho \"Bạn sẽ hối hận\": Một món đồ nhỏ nhưng nâng tầm outfit cực lớn. Giá trải nghiệm chỉ có trong hôm nay.",
+                        "Dành cho \"Bạn sẽ hối hận\": Đã đẹp lại còn đang được freeship. Bỏ qua deal này thì thật sự quá phí!"
+                    ],
+                    "hashtags": [
+                        "#nhannu",
+                        "#trangsucnu",
+                        "#phukienthoitrang",
+                        "#nhanbac",
+                        "#thoitrangnu",
+                        "#outfitideas",
+                        "#phukienxinh",
+                        "#trangsucbac",
+                        "#fashionhacks",
+                        "#xuhuong2025"
+                    ],
+                    "affiliate_links": [
+                        "https://s.shopee.vn/13cA1Z8Xw",
+                        "https://s.shopee.vn/BN2MKYVCz",
+                        "https://s.shopee.vn/LgSYdXrs2",
+                        "https://s.shopee.vn/VzskwXEX5",
+                        "https://s.shopee.vn/gJIxFWbC8",
+                        "https://s.shopee.vn/qcj9YVxrB",
+                        "https://s.shopee.vn/10w9LrVKWE",
+                        "https://s.shopee.vn/1BFZYAUhBH",
+                        "https://s.shopee.vn/1LYzkTU3qK",
+                        "https://s.shopee.vn/1VsPwmTQVN",
+                        "https://s.shopee.vn/1gBq95SnAQ",
+                        "https://s.shopee.vn/1qVGLOS9pT",
+                        "https://s.shopee.vn/20ogXhRWUW",
+                        "https://s.shopee.vn/2B86k0Qt9Z",
+                        "https://s.shopee.vn/2LRWwJQFoc",
+                        "https://s.shopee.vn/2Vkx8cPcTf",
+                        "https://s.shopee.vn/805tgj4gJk",
+                        "https://s.shopee.vn/8APJt242yn",
+                        "https://s.shopee.vn/8Kik5L3Pdq",
+                        "https://s.shopee.vn/8V2AHe2mIt"
+                    ],
+                    "fomo_titles": [
+                        "Chỉ còn đúng 5 bộ cuối cùng cho đợt sale lớn nhất năm này!",
+                        "Mẫu nhẫn \"quốc dân\" đang cháy hàng trên mọi mặt trận, bạn đã có chưa?",
+                        "Đừng mua nhẫn nếu bạn chưa biết 3 quy tắc phối đồ sang chảnh này.",
+                        "Săn ngay kẻo lỡ: Cực phẩm nhẫn dành riêng cho các nàng mệnh Thủy.",
+                        "Cảnh báo: Đeo mẫu nhẫn này ra đường ai cũng sẽ hỏi bạn mua ở đâu!",
+                        "Bí mật để đôi bàn tay trông thon dài và sang trọng chỉ trong 3 giây.",
+                        "Hết hàng trong chưa đầy 24h, đây là lý do mẫu nhẫn này cực hot.",
+                        "Cơ hội cuối cùng để sở hữu BST nhẫn giới hạn trước khi ngừng sản xuất.",
+                        "Top 3 mẫu nhẫn \"must-have\" năm 2024 mà cô gái nào cũng phải sở hữu.",
+                        "Bạn sẽ hối hận nếu bỏ qua deal nhẫn bạc thiết kế độc quyền chỉ có hôm nay."
+                    ]
+                },
+                "Bông Tai": {
+                    "page_id": "",
+                    "access_token": "",
+                    "captions": [],
+                    "hashtags": [],
+                    "affiliate_links": [],
+                    "fomo_titles": []
+                },
+                "Khăn Choàng": {
+                    "page_id": "",
+                    "access_token": "",
+                    "captions": [],
+                    "hashtags": [],
+                    "affiliate_links": [],
+                    "fomo_titles": []
+                },
+                "Găng Tay": {
+                    "page_id": "",
+                    "access_token": "",
+                    "captions": [],
+                    "hashtags": [],
+                    "affiliate_links": [],
+                    "fomo_titles": []
+                },
+                "Phụ Kiện Tóc": {
+                    "page_id": "",
+                    "access_token": "",
+                    "captions": [],
+                    "hashtags": [],
+                    "affiliate_links": [],
+                    "fomo_titles": []
+                },
+                "Vòng Tay & Lắc Tay": {
+                    "page_id": "",
+                    "access_token": "",
+                    "captions": [],
+                    "hashtags": [],
+                    "affiliate_links": [],
+                    "fomo_titles": []
+                },
+                "Lắc Chân": {
+                    "page_id": "",
+                    "access_token": "",
+                    "captions": [],
+                    "hashtags": [],
+                    "affiliate_links": [],
+                    "fomo_titles": []
+                },
+                "Mũ": {
+                    "page_id": "",
+                    "access_token": "",
+                    "captions": [],
+                    "hashtags": [],
+                    "affiliate_links": [],
+                    "fomo_titles": []
+                },
+                "Dây Chuyền": {
+                    "page_id": "",
+                    "access_token": "",
+                    "captions": [],
+                    "hashtags": [],
+                    "affiliate_links": [],
+                    "fomo_titles": []
+                },
+                "Kính Mắt": {
+                    "page_id": "",
+                    "access_token": "",
+                    "captions": [],
+                    "hashtags": [],
+                    "affiliate_links": [],
+                    "fomo_titles": []
+                },
+                "Kim Loại Quý": {
+                    "page_id": "",
+                    "access_token": "",
+                    "captions": [],
+                    "hashtags": [],
+                    "affiliate_links": [],
+                    "fomo_titles": []
+                },
+                "Thắt Lưng": {
+                    "page_id": "",
+                    "access_token": "",
+                    "captions": [],
+                    "hashtags": [],
+                    "affiliate_links": [],
+                    "fomo_titles": []
+                },
+                "Cà Vạt & Nơ Cổ": {
+                    "page_id": "",
+                    "access_token": "",
+                    "captions": [],
+                    "hashtags": [],
+                    "affiliate_links": [],
+                    "fomo_titles": []
+                },
+                "Phụ Kiện Thêm": {
+                    "page_id": "",
+                    "access_token": "",
+                    "captions": [],
+                    "hashtags": [],
+                    "affiliate_links": [],
+                    "fomo_titles": []
+                },
+                "Bộ Phụ Kiện": {
+                    "page_id": "",
+                    "access_token": "",
+                    "captions": [],
+                    "hashtags": [],
+                    "affiliate_links": [],
+                    "fomo_titles": []
+                },
+                "Khác": {
+                    "page_id": "",
+                    "access_token": "",
+                    "captions": [],
+                    "hashtags": [],
+                    "affiliate_links": [],
+                    "fomo_titles": []
+                },
+                "Vớ/ Tất": {
+                    "page_id": "",
+                    "access_token": "",
+                    "captions": [],
+                    "hashtags": [],
+                    "affiliate_links": [],
+                    "fomo_titles": []
+                },
+                "Ô/Dù": {
+                    "page_id": "",
+                    "access_token": "",
+                    "captions": [],
+                    "hashtags": [],
+                    "affiliate_links": [],
+                    "fomo_titles": []
+                }
+            }
+        },
+        "Sắc Đẹp": {
+            "sub_categories": {}
+        },
+        "Sức Khỏe": {
+            "sub_categories": {}
+        },
+        "Thiết Bị Điện Gia Dụng": {
+            "sub_categories": {}
+        },
+        "Thiết Bị Điện Tử": {
+            "sub_categories": {}
+        },
+        "Thể Thao & Du Lịch": {
+            "sub_categories": {}
+        },
+        "Thời Trang Nam": {
+            "sub_categories": {}
+        },
+        "Thời Trang Nữ": {
+            "sub_categories": {}
+        },
+        "Giặt Giũ & Chăm Sóc Nhà Cửa": {
+            "sub_categories": {}
+        },
+        "Máy Tính & Laptop": {
+            "sub_categories": {}
+        },
+        "Máy Ảnh & Máy Quay Phim": {
+            "sub_categories": {}
+        },
+        "Mẹ & Bé": {
+            "sub_categories": {}
+        },
+        "Nhà Cửa & Đời Sống": {
+            "sub_categories": {}
+        },
+        "Nhà Sách Online": {
+            "sub_categories": {}
+        },
+        "Ô Tô & Xe Máy & Xe Đạp": {
+            "sub_categories": {}
+        },
+        "Balo & Túi Ví Nam": {
+            "sub_categories": {}
+        },
+        "Bách Hóa Online": {
+            "sub_categories": {}
+        },
+        "Chăm Sóc Thú Cưng": {
+            "sub_categories": {}
+        },
+        "Dụng Cụ Và Thiết Bị Tiện Ích": {
+            "sub_categories": {}
+        },
+        "Điện Thoại & Phụ Kiện": {
+            "sub_categories": {}
+        },
+        "Đồ Chơi": {
+            "sub_categories": {}
+        },
+        "Đồng Hồ": {
+            "sub_categories": {}
+        },
+        "Giày Dép Nam": {
+            "sub_categories": {}
+        },
+        "Giày Dép Nữ": {
+            "sub_categories": {}
+        },
+        "Thời Trang Trẻ Em": {
+            "sub_categories": {}
+        },
+        "Túi Ví Nữ": {
+            "sub_categories": {}
+        },
+        "Voucher & Dịch Vụ": {
+            "sub_categories": {}
+        }
+    },
+    "saved_fanpages": {
+        "Góc săn Deal chất lượng": {
+            "page_id": "704325582774613",
+            "access_token": "EAAaWkIcIQjgBQUbFPfJkTDLWkjxSul4bZAQl3QisAThD0aFYfZCySFZCJ87wkLPkexAQZB7VZAjKHKWNvV6NTFbucWMrEpl6OcDRgDc6LjfkRjqqIa7aBfsjyaJr5FDNoEJClY2L0UBt4dBxABm7ZAxNZA17E3YEidZA36mx6aeHu8c7JmnRD3tMMSkqjclId3lzogbiJZAkyPDobdZC56vCeJiDx9"
+        }
+    }
+}
