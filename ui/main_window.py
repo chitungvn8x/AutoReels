@@ -23,7 +23,7 @@ class App(ctk.CTk):
         super().__init__()
         self.title("AutoReels Pro V90 (Full Fixed)")
         self.geometry("1280x800")
-        self.minsize(1024, 700)
+        # self.minsize(1024, 700) # Tuỳ chọn
         
         self.downloading_states = set()
         self.checked_links_cache = set()
@@ -48,27 +48,45 @@ class App(ctk.CTk):
         
         self.refresh_cat_list_ui()
         self.refresh_ops_combos()
-        try: self.after(0, lambda: self.state("zoomed"))
-        except: pass
+        # [FIX] Main window: Không maximize window
+        # try: self.after(0, lambda: self.state("zoomed"))
+        # except: pass
 
     # --- SETUP UI VẬN HÀNH ---
     def setup_operations_tab(self):
         self.tab_ops.grid_columnconfigure(0, weight=1)
         
-        # 1. HEADER
-        f_top = ctk.CTkFrame(self.tab_ops, height=60)
+        # 1. HEADER (Cân chỉnh Grid để Center)
+        f_top = ctk.CTkFrame(self.tab_ops, height=60, fg_color="transparent")
         f_top.pack(fill="x", padx=10, pady=5)
         
-        ctk.CTkLabel(f_top, text="NGÁCH:", font=("Arial", 14, "bold")).pack(side="left", padx=10)
-        self.combo_cat_ops = ctk.CTkComboBox(f_top, command=self.on_change_cat_ops, width=200)
+        # Chia 3 cột: Left (Settings) - Center (Combos) - Right (Stop)
+        f_top.grid_columnconfigure(0, weight=1)
+        f_top.grid_columnconfigure(1, weight=0) # Center fit content
+        f_top.grid_columnconfigure(2, weight=1)
+
+        # Left
+        f_left_btn = ctk.CTkFrame(f_top, fg_color="transparent")
+        f_left_btn.grid(row=0, column=0, sticky="w")
+        ctk.CTkButton(f_left_btn, text="⚙️ CÀI ĐẶT", command=lambda: self.tabview.set("⚙️ CÀI ĐẶT"), width=100, fg_color="#34495E").pack(side="left")
+
+        # Center (Ngách & Sub)
+        f_center_sel = ctk.CTkFrame(f_top, fg_color="transparent")
+        f_center_sel.grid(row=0, column=1)
+        
+        ctk.CTkLabel(f_center_sel, text="NGÁCH:", font=("Arial", 14, "bold")).pack(side="left", padx=5)
+        self.combo_cat_ops = ctk.CTkComboBox(f_center_sel, command=self.on_change_cat_ops, width=180)
         self.combo_cat_ops.pack(side="left", padx=5)
         
-        self.combo_sub_ops = ctk.CTkComboBox(f_top, command=self.on_change_sub_ops, width=200)
+        ctk.CTkLabel(f_center_sel, text="SUB:", font=("Arial", 14, "bold")).pack(side="left", padx=5)
+        self.combo_sub_ops = ctk.CTkComboBox(f_center_sel, command=self.on_change_sub_ops, width=180)
         self.combo_sub_ops.pack(side="left", padx=5)
-        
-        ctk.CTkButton(f_top, text="⚙️ CÀI ĐẶT", command=lambda: self.tabview.set("⚙️ CÀI ĐẶT"), width=100, fg_color="#34495E").pack(side="left", padx=10)
-        self.btn_stop = ctk.CTkButton(f_top, text="🛑 DỪNG", command=self.stop_process, fg_color="#C0392B", width=80, state="disabled")
-        self.btn_stop.pack(side="right", padx=10)
+
+        # Right
+        f_right_btn = ctk.CTkFrame(f_top, fg_color="transparent")
+        f_right_btn.grid(row=0, column=2, sticky="e")
+        self.btn_stop = ctk.CTkButton(f_right_btn, text="🛑 DỪNG", command=self.stop_process, fg_color="#C0392B", width=80, state="disabled")
+        self.btn_stop.pack(side="right")
         
         # 2. MAIN PANED
         paned = ctk.CTkFrame(self.tab_ops, fg_color="transparent")
@@ -120,15 +138,20 @@ class App(ctk.CTk):
         
         # Container nút bấm động
         self.f_batch_dl = ctk.CTkFrame(self.f_action, fg_color="transparent")
+        self.f_batch_orig = ctk.CTkFrame(self.f_action, fg_color="transparent")
         self.f_batch_up = ctk.CTkFrame(self.f_action, fg_color="transparent")
         
+        # Pending Actions
         ctk.CTkButton(self.f_batch_dl, text="⬇ TẢI TẤT CẢ ĐÃ CHỌN", command=self.run_downloader_queue, fg_color="orange").pack(side="right")
         
+        # Original Actions
+        ctk.CTkButton(self.f_batch_orig, text="⚡ AUTO EDIT (BATCH)", command=self.run_batch_auto_edit, fg_color="purple").pack(side="right")
+        
+        # Edited Actions
         ctk.CTkButton(self.f_batch_up, text="ĐĂNG NGAY", command=self.upload_now, fg_color="green", width=100).pack(side="right", padx=5)
         ctk.CTkButton(self.f_batch_up, text="LÊN LỊCH", command=self.upload_schedule, width=100).pack(side="right", padx=5)
 
         # --- RIGHT PANEL (LOG) ---
-        # [FIX] Thu hẹp Log còn khoảng 300px
         f_right = ctk.CTkFrame(paned, width=300) 
         f_right.pack(side="right", fill="y", padx=5)
         
@@ -151,6 +174,7 @@ class App(ctk.CTk):
         
         # Ẩn nút batch action
         self.f_batch_dl.pack_forget()
+        self.f_batch_orig.pack_forget()
         self.f_batch_up.pack_forget()
         
         # Reset dữ liệu chọn
@@ -166,7 +190,7 @@ class App(ctk.CTk):
         # --- LOAD DATA TÙY TAB ---
         if mode == "PENDING":
             self.btn_nav_pending.configure(fg_color="#3498DB", border_width=2, border_color="white")
-            self.f_batch_dl.pack(side="right", padx=10) # Hiện nút Tải
+            self.f_batch_dl.pack(side="right", padx=10) 
             
             items = self.backend.get_download_list(self.combo_cat_ops.get(), self.combo_sub_ops.get(), "PENDING")
             self.download_queue_items = {}
@@ -178,20 +202,19 @@ class App(ctk.CTk):
 
         elif mode == "ORIGINAL":
             self.btn_nav_orig.configure(fg_color="#D35400", border_width=2, border_color="white")
+            self.f_batch_orig.pack(side="right", padx=10) # Hiện nút Batch Edit
+            
             items = self.backend.get_original_videos(self.combo_cat_ops.get(), self.combo_sub_ops.get())
             for i in items:
-                # Tạo Card Video (Gốc)
                 self.card_factory.create_upload_card(self.scroll_queue, i)
         
         elif mode == "EDITED":
             self.btn_nav_edit.configure(fg_color="#1E8449", border_width=2, border_color="white")
-            self.f_batch_up.pack(side="right", padx=10) # Hiện nút Đăng/Lên lịch
+            self.f_batch_up.pack(side="right", padx=10) 
             
             items = self.backend.get_edited_videos(self.combo_cat_ops.get(), self.combo_sub_ops.get())
-            # Lưu map để lấy file gốc cho Review
             self.current_edited_items = {i['path']: i for i in items}
             for i in items:
-                # Tạo Card Video (Edit)
                 self.card_factory.create_upload_card(self.scroll_queue, i)
 
         if not items:
@@ -199,15 +222,16 @@ class App(ctk.CTk):
         
         self.log_message(f"Tải xong danh sách {mode}: {len(items)} items")
 
-    # --- MENU CHUỘT PHẢI (CONTEXT MENU) ---
+    # --- MENU CHUỘT PHẢI ---
     def show_context_menu(self, event, item, menu_type):
         try:
             menu = tk.Menu(self, tearoff=0)
             
             if menu_type == "PENDING":
                 link = item["data"]
-                # [FIX] Mở link gốc
-                menu.add_command(label="🔗 Mở Link Gốc (Trình duyệt)", command=lambda: webbrowser.open(link))
+                # [FIX] Thêm nút Tải ngay và Xem online
+                menu.add_command(label="⬇ Tải Ngay (Ưu tiên)", command=lambda: self.run_single_download(link))
+                menu.add_command(label="🌐 Xem Online (Trình duyệt)", command=lambda: self.log_open_browser(link))
                 menu.add_separator()
                 menu.add_command(label="Xóa khỏi danh sách", command=lambda: self.remove_from_queue(link))
                 
@@ -230,10 +254,18 @@ class App(ctk.CTk):
                 menu.add_command(label="Lên Lịch", command=lambda: self.single_schedule(path))
 
             menu.tk_popup(event.x_root, event.y_root)
-            self.log_message(f"🖱️ Mở menu chuột phải cho: {item.get('name', 'Link')}")
+            # [FIX] Log: Không ghi log khi chỉ mở menu, chỉ ghi trong hàm gọi
         except: pass
 
-    # --- DOWNLOADER (FIX TREO & AUTO REFRESH) ---
+    def log_open_browser(self, link):
+        self.log_message(f"🌐 Mở trình duyệt: {link}")
+        webbrowser.open(link)
+
+    # --- DOWNLOADER ---
+    def run_single_download(self, link):
+        self.log_message(f"⬇ Bắt đầu tải đơn: {link}")
+        threading.Thread(target=self._download_thread_worker, args=([link],), daemon=True).start()
+
     def run_downloader_queue(self):
         if not self.combo_cat_ops.get():
              messagebox.showwarning("!", "Vui lòng chọn Ngách!"); return
@@ -243,53 +275,42 @@ class App(ctk.CTk):
             messagebox.showwarning("!", "Chưa chọn link nào để tải!"); return
             
         self.log_message(f"⬇ Bắt đầu tải {len(to_dl)} video...")
-        self.f_batch_dl.pack_forget() # Ẩn nút tải đi để tránh bấm nhiều lần
-        
-        # [FIX] Chạy luồng riêng (Threading)
+        self.f_batch_dl.pack_forget() 
         threading.Thread(target=self._download_thread_worker, args=(to_dl,), daemon=True).start()
 
     def _download_thread_worker(self, to_dl):
-        # Gọi backend xử lý
         self.backend.process_download_queue(
             self.combo_cat_ops.get(), 
             self.combo_sub_ops.get(), 
             to_dl, 
-            self.update_dl_status_safe # Callback update UI
+            self.update_dl_status_safe 
         )
-        # [FIX] Refresh ngay sau khi xong (quay về main thread)
         self.after(0, lambda: self.finish_download_batch())
 
     def finish_download_batch(self):
         self.log_message("✅ Đã hoàn tất phiên tải.")
-        messagebox.showinfo("Thông báo", "Đã tải xong toàn bộ video đã chọn!")
-        self.log_and_load("PENDING") # Refresh list
+        messagebox.showinfo("Thông báo", "Đã tải xong!")
+        self.log_and_load("PENDING") 
 
     def update_dl_status_safe(self, link, status, path, thumb, tm, url=None):
-        # Đẩy update UI về main thread
         self.after(0, lambda: self._update_dl_card_ui(link, status, path, thumb))
 
     def _update_dl_card_ui(self, link, status, path, thumb):
         if link in self.download_queue_items:
             ui = self.download_queue_items[link]
             ui["lbl"].configure(text=status)
-            
-            # [FIX] Hiển thị Progress Bar
             if "Đang tải" in status:
                 ui["lbl"].configure(text_color="#3498DB")
-                ui["prog"].pack(pady=5) # Hiện thanh
-                ui["prog"].start()
+                ui["prog"].pack(pady=5); ui["prog"].start()
             elif "THÀNH CÔNG" in status:
                 ui["lbl"].configure(text="✅ XONG", text_color="green")
-                ui["prog"].stop()
-                ui["prog"].pack_forget() # Ẩn thanh
-                # Tự xóa khỏi list visual
+                ui["prog"].stop(); ui["prog"].pack_forget()
                 self.remove_from_queue(link) 
             else:
                 ui["lbl"].configure(text_color="red")
-                ui["prog"].stop()
-                ui["prog"].pack_forget()
+                ui["prog"].stop(); ui["prog"].pack_forget()
 
-    # --- CÁC HÀM XỬ LÝ KHÁC (CHECKBOX, SCRAPER, EDIT...) ---
+    # --- CHECKBOX & ACTIONS ---
     def run_scraper_action(self):
         self.log_message("🔍 Bấm nút Quét Link...")
         if not self.combo_cat_ops.get():
@@ -306,7 +327,6 @@ class App(ctk.CTk):
         else: self.checked_links_cache.remove(link)
 
     def on_check_upload(self, var, path):
-        # [FIX] Logic Checkbox chọn video file
         if var.get(): 
             if path not in self.upload_selected_files:
                 self.upload_selected_files.append(path)
@@ -316,7 +336,6 @@ class App(ctk.CTk):
         self.lbl_sel.configure(text=f"CHỌN: {len(self.upload_selected_files)}")
     
     def on_change_cat_ops(self, cat):
-        # [FIX] Update Sub theo Cat
         subs = list(self.settings["categories"][cat]["sub_categories"].keys())
         self.combo_sub_ops.configure(values=subs)
         if subs: 
@@ -332,19 +351,40 @@ class App(ctk.CTk):
             d = self.settings["categories"][cat]["sub_categories"].get(sub, {})
             self.entry_hash_ops.delete("1.0", "end")
             self.entry_hash_ops.insert("1.0", ", ".join(d.get("hashtags", [])))
-            # Reset view khi đổi ngách để tránh nhầm lẫn
             self.load_list(self.current_view_mode)
 
     # --- EDIT & UPLOAD ---
     def process_single_video(self, file_path, mode):
-        self.upload_selected_files = [file_path] # Set tạm chọn 1 file
+        self.upload_selected_files = [file_path] 
         if mode == "quick":
+            # [FIX] Hiển thị thông báo xác nhận trước khi Auto Edit
+            msg = (f"Bạn có chắc muốn AUTO EDIT video này?\n\n"
+                   f"File: {os.path.basename(file_path)}\n"
+                   f"Cấu hình: Speed 1.05x, Crop 10px, Gamma 1.1")
+            if not messagebox.askyesno("Xác nhận Auto Edit", msg):
+                return
+            
             self.log_message(f"⚡ Auto Edit 1 video: {os.path.basename(file_path)}")
             default_settings = {"speed": 1.05, "crop": 10, "gamma": 1.1, "mirror": False}
             self.run_processing_task(default_settings)
         else:
             self.log_message(f"🛠 Tùy chỉnh Edit: {os.path.basename(file_path)}")
             EditConfigDialog(self, self.run_processing_task)
+
+    def run_batch_auto_edit(self):
+        if not self.upload_selected_files:
+            messagebox.showwarning("!", "Chưa chọn video nào để edit!")
+            return
+        
+        # [FIX] Batch Auto Edit confirm
+        msg = (f"Bạn có chắc muốn AUTO EDIT {len(self.upload_selected_files)} video đã chọn?\n\n"
+               f"Cấu hình: Speed 1.05x, Crop 10px, Gamma 1.1")
+        if not messagebox.askyesno("Xác nhận Batch Edit", msg):
+            return
+
+        self.log_message(f"⚡ Batch Auto Edit: {len(self.upload_selected_files)} videos")
+        default_settings = {"speed": 1.05, "crop": 10, "gamma": 1.1, "mirror": False}
+        self.run_processing_task(default_settings)
 
     def run_processing_task(self, settings):
         self.btn_stop.configure(state="normal")
@@ -362,7 +402,7 @@ class App(ctk.CTk):
             self.log_message(f"✅ Đã edit xong {len(new_files)} video.")
             if messagebox.askyesno("XONG", f"Đã edit xong {len(new_files)} video.\nChuyển sang tab ĐÃ SỬA & ĐĂNG để kiểm tra?"):
                 self.load_list("EDITED")
-            else: self.load_list("ORIGINAL") # Refresh tại chỗ
+            else: self.load_list("ORIGINAL") 
         else: messagebox.showwarning("!", "Có lỗi khi xử lý video")
 
     def upload_now(self):
@@ -403,7 +443,7 @@ class App(ctk.CTk):
             del self.download_queue_items[link]
             if link in self.checked_links_cache: self.checked_links_cache.remove(link)
 
-    # --- BOILERPLATE ---
+    # --- BOILERPLATE & PROXY ---
     def run_task(self, func, cb=None):
         self.btn_stop.configure(state="normal")
         threading.Thread(target=lambda: [func(), self.after(0, lambda: self.reset_ui(cb))], daemon=True).start()
@@ -424,14 +464,16 @@ class App(ctk.CTk):
         self.combo_cat_ops.configure(values=cats)
         if cats: self.combo_cat_ops.set(cats[0]); self.on_change_cat_ops(cats[0])
     def open_link_file(self): self.backend.open_local_path(str(self.backend.get_paths(self.combo_cat_ops.get(), self.combo_sub_ops.get())["link_file"]))
-    def open_video_folder(self): self.backend.open_local_path(str(self.backend.get_paths(self.combo_cat_ops.get(), self.combo_sub_ops.get())["video_dir"]))
     def stop_process(self): self.backend.stop_flag = True
     def refresh_cat_list_ui(self): self.settings_ui.refresh_cat_list_ui()
+    
+    # [FIX] Settings Proxy Methods
     def save_settings(self):
         with open(SETTINGS_FILE, "w", encoding="utf-8") as f: json.dump(self.settings, f, ensure_ascii=False, indent=4)
     def add_item(self, t): self.settings_ui.add_item(t)
     def delete_item(self, t): self.settings_ui.delete_item(t)
     def import_txt(self, t): self.settings_ui.import_txt(t)
+    
     def verify_fanpage_connection(self): self.settings_ui.verify_fanpage_connection()
     def get_cookie_action(self): self.start_cookie_flow()
     def single_schedule(self, path): ScheduleDialog(self, lambda times: self.exec_single_upload(path, times), 1)

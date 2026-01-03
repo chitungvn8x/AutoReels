@@ -10,7 +10,6 @@ class SettingsTab:
         
         # --- INIT VARS ---
         self.entry_chrome = None
-        # Đã bỏ entry_profile vì không cần nhập tay nữa
         self.current_cat = None
         self.current_sub = None
         self.detected_page_name = None
@@ -23,12 +22,9 @@ class SettingsTab:
         self.setup_ui()
 
     def setup_ui(self):
-        # Cấu trúc lưới: Cột 0,1 nhỏ; Cột 2 lớn (Content)
         self.tab.grid_columnconfigure((0, 1), weight=1)
         self.tab.grid_columnconfigure(2, weight=3)
-        # Dòng 0: Danh sách & Content (cho giãn nở)
         self.tab.grid_rowconfigure(0, weight=1)
-        # Dòng 1: System settings (cố định dưới cùng)
         self.tab.grid_rowconfigure(1, weight=0)
 
         # --- COL 1: DANH MỤC ---
@@ -40,8 +36,7 @@ class SettingsTab:
         self.entry_filter_cat.bind("<KeyRelease>", self.on_filter_cat)
         self.lst_cats = ctk.CTkScrollableFrame(f_cat)
         self.lst_cats.pack(fill="both", expand=True, padx=5, pady=5)
-        self.entry_add_cat = ctk.CTkEntry(f_cat, placeholder_text="NHẬP TÊN...")
-        self.entry_add_cat.pack(fill="x", padx=5)
+        
         self.create_crud_buttons(f_cat, "CAT")
 
         # --- COL 2: NGÁCH ---
@@ -53,11 +48,10 @@ class SettingsTab:
         self.entry_filter_sub.bind("<KeyRelease>", self.on_filter_sub)
         self.lst_subs = ctk.CTkScrollableFrame(f_sub)
         self.lst_subs.pack(fill="both", expand=True, padx=5, pady=5)
-        self.entry_add_sub = ctk.CTkEntry(f_sub, placeholder_text="NHẬP TÊN...")
-        self.entry_add_sub.pack(fill="x", padx=5)
+        
         self.create_crud_buttons(f_sub, "SUB")
 
-        # --- COL 3: NỘI DUNG (Layout Flex để nút Lưu không bị che) ---
+        # --- COL 3: NỘI DUNG ---
         f_conf = ctk.CTkFrame(self.tab)
         f_conf.grid(row=0, column=2, sticky="nsew", padx=5, pady=5)
         
@@ -84,7 +78,7 @@ class SettingsTab:
         self.e_tok.pack(side="left", fill="x", expand=True, padx=5)
         ctk.CTkButton(f_tk2, text="CHECK", width=50, command=self.verify_fanpage_connection, fg_color="#3498DB").pack(side="right")
 
-        # 2. Scrollable Content (Các ô nhập liệu sẽ cuộn nếu cửa sổ nhỏ)
+        # 2. Scrollable Content
         self.scroll_content = ctk.CTkScrollableFrame(f_conf, fg_color="transparent")
         self.scroll_content.pack(fill="both", expand=True, padx=5, pady=5)
         
@@ -98,25 +92,21 @@ class SettingsTab:
         self.t_cap.insert("1.0", "Nội dung mô tả...")
         self.t_cap.bind("<FocusIn>", lambda e: self.t_cap.delete("1.0", "end") if "Nội dung" in self.t_cap.get("1.0", "end-1c") else None)
 
-        # 3. Footer (Nút Lưu) - Luôn hiển thị ở đáy
-        ctk.CTkButton(f_conf, text="💾 LƯU CẤU HÌNH", command=self.app.save_settings, height=40, fg_color="green", font=("Arial", 13, "bold")).pack(fill="x", padx=20, pady=10)
+        # 3. Footer (Nút Lưu)
+        ctk.CTkButton(f_conf, text="💾 LƯU CẤU HÌNH", command=self.save_current_sub_config, height=40, fg_color="green", font=("Arial", 13, "bold")).pack(fill="x", padx=20, pady=10)
 
-        # --- SYSTEM (ROW 1 - DƯỚI CÙNG TAB) ---
+        # --- SYSTEM (ROW 1) ---
         f_sys = ctk.CTkFrame(self.tab, height=50, fg_color="#222")
         f_sys.grid(row=1, column=0, columnspan=3, sticky="ew", padx=5, pady=5)
         
         ctk.CTkLabel(f_sys, text="Chrome Profile:", font=("Arial", 12, "bold")).pack(side="left", padx=10)
-        
         self.entry_chrome = ctk.CTkEntry(f_sys, width=350)
         self.entry_chrome.pack(side="left", padx=5)
-        
-        # Hiển thị đường dẫn đầy đủ hiện tại
         full_path = os.path.join(self.app.settings.get("chrome_user_data", ""), self.app.settings.get("chrome_profile", ""))
         self.entry_chrome.insert(0, full_path)
         self.entry_chrome.configure(state="disabled")
         
         ctk.CTkButton(f_sys, text="📂 CHỌN PROFILE", width=120, command=self.browse_chrome_profile, fg_color="#555").pack(side="left", padx=5)
-        
         self.btn_get_cookie = ctk.CTkButton(f_sys, text="ĐĂNG NHẬP TIKTOK", command=self.get_cookie_action, width=150, fg_color="#E67E22")
         self.btn_get_cookie.pack(side="right", padx=10)
         
@@ -136,30 +126,104 @@ class SettingsTab:
     def create_crud_buttons(self, parent, type_item):
         f = ctk.CTkFrame(parent, fg_color="transparent")
         f.pack(fill="x", pady=5)
-        ctk.CTkButton(f, text="THÊM", width=50, command=lambda: self.app.add_item(type_item), fg_color="green").pack(side="left", fill="x", expand=True, padx=1)
-        ctk.CTkButton(f, text="XÓA", width=50, command=lambda: self.app.delete_item(type_item), fg_color="red").pack(side="left", fill="x", expand=True, padx=1)
-        ctk.CTkButton(f, text="IMPORT", width=50, command=lambda: self.app.import_txt(type_item), fg_color="gray").pack(side="left", fill="x", expand=True, padx=1)
+        ctk.CTkButton(f, text="THÊM", width=50, command=lambda: self.add_item(type_item), fg_color="green").pack(side="left", fill="x", expand=True, padx=1)
+        ctk.CTkButton(f, text="XÓA", width=50, command=lambda: self.delete_item(type_item), fg_color="red").pack(side="left", fill="x", expand=True, padx=1)
+        ctk.CTkButton(f, text="IMPORT", width=50, command=lambda: self.import_txt(type_item), fg_color="gray").pack(side="left", fill="x", expand=True, padx=1)
 
-    # [LOGIC MỚI] Chọn Profile và tự tách path
+    # --- [NEW] IMPLEMENT ADD/DELETE/IMPORT ---
+    def add_item(self, type_item):
+        name = simpledialog.askstring("Thêm Mới", f"Nhập tên {type_item}:")
+        if not name or not name.strip(): return
+        name = name.strip()
+        
+        if type_item == "CAT":
+            if name in self.app.settings["categories"]:
+                messagebox.showerror("Lỗi", "Danh mục đã tồn tại!")
+                return
+            self.app.settings["categories"][name] = {"sub_categories": {}}
+            self.app.save_settings()
+            self.refresh_cat_list_ui()
+            
+        elif type_item == "SUB":
+            if not self.current_cat:
+                messagebox.showwarning("!", "Vui lòng chọn Danh mục trước!")
+                return
+            if name in self.app.settings["categories"][self.current_cat]["sub_categories"]:
+                messagebox.showerror("Lỗi", "Ngách đã tồn tại!")
+                return
+            # Tạo sub mới với cấu hình rỗng
+            self.app.settings["categories"][self.current_cat]["sub_categories"][name] = {
+                "page_id": "", "access_token": "", 
+                "fomo_titles": [], "affiliate_links": [], "hashtags": [], "captions": []
+            }
+            self.app.save_settings()
+            self.refresh_sub_list_ui()
+
+    def delete_item(self, type_item):
+        if type_item == "CAT":
+            if not self.current_cat: return
+            if not messagebox.askyesno("Xác nhận", f"Xóa danh mục '{self.current_cat}' và toàn bộ ngách con?"): return
+            del self.app.settings["categories"][self.current_cat]
+            self.current_cat = None; self.current_sub = None
+            self.app.save_settings()
+            self.refresh_cat_list_ui()
+            self.render_sub_list([]) # Clear sub list
+            
+        elif type_item == "SUB":
+            if not self.current_cat or not self.current_sub: return
+            if not messagebox.askyesno("Xác nhận", f"Xóa ngách '{self.current_sub}'?"): return
+            del self.app.settings["categories"][self.current_cat]["sub_categories"][self.current_sub]
+            self.current_sub = None
+            self.app.save_settings()
+            self.refresh_sub_list_ui()
+            self.toggle_config_inputs(False)
+
+    def import_txt(self, type_item):
+        path = filedialog.askopenfilename(filetypes=[("Text", "*.txt")])
+        if not path: return
+        
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                lines = [l.strip() for l in f.readlines() if l.strip()]
+                
+            count = 0
+            if type_item == "CAT":
+                for l in lines:
+                    if l not in self.app.settings["categories"]:
+                        self.app.settings["categories"][l] = {"sub_categories": {}}
+                        count += 1
+                if count > 0:
+                    self.app.save_settings()
+                    self.refresh_cat_list_ui()
+                    
+            elif type_item == "SUB":
+                if not self.current_cat: messagebox.showwarning("!", "Chọn danh mục trước!"); return
+                for l in lines:
+                    if l not in self.app.settings["categories"][self.current_cat]["sub_categories"]:
+                        self.app.settings["categories"][self.current_cat]["sub_categories"][l] = {
+                            "page_id": "", "access_token": "", "hashtags": []
+                        }
+                        count += 1
+                if count > 0:
+                    self.app.save_settings()
+                    self.refresh_sub_list_ui()
+            
+            messagebox.showinfo("Thành công", f"Đã nhập {count} mục mới.")
+        except Exception as e:
+            messagebox.showerror("Lỗi", str(e))
+
+    # --- CHROME & COOKIE ---
     def browse_chrome_profile(self):
-        p = filedialog.askdirectory(title="Chọn thư mục Profile (VD: User Data/Profile 1)", 
+        p = filedialog.askdirectory(title="Chọn thư mục Profile", 
                                     initialdir=os.path.expandvars(r'%LOCALAPPDATA%\Google\Chrome\User Data'))
         if p:
-            # Tách đường dẫn
-            user_data_dir = os.path.dirname(p) # Lấy thư mục cha (User Data)
-            profile_name = os.path.basename(p) # Lấy tên thư mục cuối (Profile 1)
-            
-            # Hiển thị UI
+            user_data_dir = os.path.dirname(p)
+            profile_name = os.path.basename(p)
             self.entry_chrome.configure(state="normal")
-            self.entry_chrome.delete(0, "end")
-            self.entry_chrome.insert(0, p)
+            self.entry_chrome.delete(0, "end"); self.entry_chrome.insert(0, p)
             self.entry_chrome.configure(state="disabled")
-            
-            # Lưu vào settings ngay lập tức
             self.app.settings["chrome_user_data"] = user_data_dir
             self.app.settings["chrome_profile"] = profile_name
-            
-            # Mở lại nút login
             self.btn_get_cookie.configure(state="normal", text="ĐĂNG NHẬP TIKTOK", fg_color="#E67E22")
 
     def get_cookie_action(self):
@@ -211,8 +275,9 @@ class SettingsTab:
             if "saved_fanpages" not in self.app.settings: self.app.settings["saved_fanpages"] = {}
             self.app.settings["saved_fanpages"][self.detected_page_name] = {"page_id": pid, "access_token": tok}
             self.refresh_fanpage_combo(); self.detected_page_name = None
-            
-        self.lbl_conf.configure(text=f"ĐANG SỬA: {self.current_sub}", text_color="yellow")
+        
+        self.app.save_settings() # Lưu ra file
+        self.lbl_conf.configure(text=f"ĐÃ LƯU: {self.current_sub}", text_color="green")
     
     # --- LIST UI ---
     def refresh_cat_list_ui(self):

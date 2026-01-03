@@ -21,13 +21,30 @@ class ScheduleDialog(ctk.CTkToplevel):
         super().__init__(parent)
         self.callback = callback; self.req = count
         self.title(f"Lên Lịch ({count} video)"); self.geometry("500x500")
+        
+        # [FIX] Đưa lên trên cùng
+        self.attributes("-topmost", True)
+        self.grab_set()
+
         self.times = []
         self.cal = Calendar(self, selectmode='day', date_pattern='dd/mm/yyyy'); self.cal.pack(pady=10)
         
         f = ctk.CTkFrame(self); f.pack()
-        self.hh = ctk.CTkComboBox(f, values=[f"{i:02d}" for i in range(24)], width=60); self.hh.pack(side="left")
+        
+        # [FIX] Default time = Current time
+        now = datetime.now()
+        
+        self.hh = ctk.CTkComboBox(f, values=[f"{i:02d}" for i in range(24)], width=60)
+        self.hh.pack(side="left")
+        self.hh.set(f"{now.hour:02d}")
+        
         ctk.CTkLabel(f, text=":").pack(side="left")
-        self.mm = ctk.CTkComboBox(f, values=[f"{i:02d}" for i in range(0, 60, 5)], width=60); self.mm.pack(side="left")
+        
+        # Cho phép chọn từng phút (0-59)
+        self.mm = ctk.CTkComboBox(f, values=[f"{i:02d}" for i in range(60)], width=60)
+        self.mm.pack(side="left")
+        self.mm.set(f"{now.minute:02d}")
+        
         ctk.CTkButton(f, text="Thêm", width=60, command=self.add).pack(side="left", padx=5)
         
         self.lst = ctk.CTkTextbox(self, height=150); self.lst.pack(fill="x", padx=10, pady=5)
@@ -36,7 +53,9 @@ class ScheduleDialog(ctk.CTkToplevel):
     def add(self):
         try:
             dt = datetime.strptime(f"{self.cal.get_date()} {self.hh.get()}:{self.mm.get()}", "%d/%m/%Y %H:%M")
-            if dt <= datetime.now() + timedelta(minutes=15): messagebox.showwarning("Lỗi", "Thời gian phải > 15 phút!"); return
+            if dt <= datetime.now() + timedelta(minutes=1): 
+                messagebox.showwarning("Lỗi", "Thời gian phải lớn hơn hiện tại!")
+                return
             self.times.append(dt); self.lst.insert("end", f"⏰ {dt.strftime('%d/%m %H:%M')}\n")
         except: pass
 

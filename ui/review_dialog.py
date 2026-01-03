@@ -5,7 +5,8 @@ from ui.player import SimpleVideoPlayer
 class ReviewDialog(ctk.CTkToplevel):
     def __init__(self, parent, original_path, edited_path):
         super().__init__(parent)
-        self.title("REVIEW: SO SÁNH TRƯỚC VÀ SAU KHI EDIT")
+        # [FIX] Đổi tên tiêu đề
+        self.title("REVIEW SO SÁNH: TRƯỚC VÀ SAU KHI EDIT")
         self.geometry("900x600")
         self.resizable(False, False)
         self.attributes("-topmost", True)

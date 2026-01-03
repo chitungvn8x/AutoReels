@@ -10,9 +10,11 @@ class EditConfigDialog(ctk.CTkToplevel):
         self.title("Cấu hình & Vị trí Logo")
         self.geometry("500x700")
         self.resizable(False, False)
-        # Popup hiện ngay nhưng không bắt buộc ontop vĩnh viễn (để popup khác đè lên được)
-        self.attributes("-topmost", False) 
-        self.focus_force() # Focus ngay
+        
+        # [FIX] Đưa form lên trên cùng để không bị che
+        self.attributes("-topmost", True)
+        self.grab_set() 
+        self.focus_force()
 
         self.logo_path = None
         # Vị trí logo mặc định (tương đối 0.0 - 1.0)
