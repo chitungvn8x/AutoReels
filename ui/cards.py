@@ -15,26 +15,28 @@ class VideoCardFactory:
         for child in widget.winfo_children(): self._bind_recursive(child, item, menu_type)
 
     def create_queue_card(self, parent, item, initial_check=False):
-        # [UPDATED] Layout Pending Card
+        # Card Chờ Tải
         f_card = ctk.CTkFrame(parent, height=100, fg_color="#2B2B2B")
         f_card.pack(fill="x", pady=2, padx=5)
+        # [FIX] Cố định chiều cao thẻ chờ tải
+        f_card.pack_propagate(False)
 
         var_chk = ctk.BooleanVar(value=initial_check)
         chk = ctk.CTkCheckBox(f_card, text="", variable=var_chk, width=20,
                               command=lambda: self.app.on_check_dl(var_chk, item["data"]))
         chk.pack(side="left", padx=5)
 
-        # Thumbnail Placeholder
+        # Thumbnail
         f_thumb = ctk.CTkFrame(f_card, width=60, height=90, fg_color="#111")
         f_thumb.pack(side="left", fill="y", padx=2, pady=2)
         f_thumb.pack_propagate(False)
         lbl_thumb = ctk.CTkLabel(f_thumb, text="TIKTOK", font=("Arial", 8), text_color="gray")
         lbl_thumb.pack(expand=True, fill="both")
 
-        # [FIX] Load thumb if available (Pending logic)
         if item.get("thumb") and os.path.exists(item.get("thumb")):
             try:
-                img = ctk.CTkImage(Image.open(item.get("thumb")), size=(60, 90))
+                # Resize ảnh cho vừa khít
+                img = ctk.CTkImage(Image.open(item.get("thumb")), size=(60, 96))
                 lbl_thumb.configure(image=img, text="")
             except: pass
 
@@ -60,10 +62,13 @@ class VideoCardFactory:
         return {"card": f_card, "lbl": lbl_status, "prog": prog}
 
     def create_upload_card(self, parent, item):
-        # [UPDATED] Full-Bleed Thumbnail & Right-Side Buttons
-        card_height = 110
+        # [UPDATED] Card Video - Cố định chiều cao để Thumbnail tràn viền chuẩn
+        card_height = 120
         f_card = ctk.CTkFrame(parent, height=card_height, fg_color="#2B2B2B")
         f_card.pack(fill="x", pady=4, padx=5)
+
+        # [QUAN TRỌNG] Cố định chiều cao frame, không cho text đẩy giãn frame
+        f_card.pack_propagate(False)
 
         # Checkbox
         is_checked = item["path"] in self.app.upload_selected_files
@@ -72,7 +77,7 @@ class VideoCardFactory:
                               command=lambda: self.app.on_check_upload(var_chk, item["path"]))
         chk.pack(side="left", padx=8)
 
-        # Full-height Thumbnail (No padding Y)
+        # Full-height Thumbnail
         f_thumb = ctk.CTkFrame(f_card, width=80, fg_color="black")
         f_thumb.pack(side="left", fill="y", padx=0, pady=0)
         f_thumb.pack_propagate(False)
@@ -83,6 +88,7 @@ class VideoCardFactory:
         if item["thumb"] and os.path.exists(item["thumb"]):
             try:
                 img_pil = Image.open(item["thumb"])
+                # Ép ảnh resize đúng bằng chiều cao card
                 img = ctk.CTkImage(img_pil, size=(80, card_height))
                 lbl_img.configure(image=img, text="")
             except: pass
@@ -105,11 +111,10 @@ class VideoCardFactory:
         elif "CHƯA" in status_text: st_color = "#E67E22"
         ctk.CTkLabel(f_content, text=status_text, text_color=st_color, font=("Arial", 11, "bold"), anchor="w").pack(fill="x", pady=(0, 5))
 
-        # Right-Side Buttons (Fix layout issue)
+        # Right-Side Buttons
         f_btns = ctk.CTkFrame(f_card, fg_color="transparent")
         f_btns.pack(side="right", padx=10, fill="y")
 
-        # Center vertically in right panel
         f_btns.grid_columnconfigure(0, weight=1)
         f_btns.grid_rowconfigure(0, weight=1); f_btns.grid_rowconfigure(3, weight=1)
 

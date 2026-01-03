@@ -214,7 +214,61 @@
             }
         },
         "Sắc Đẹp": {
-            "sub_categories": {}
+            "sub_categories": {
+                "Chăm sóc da mặt": {
+                    "page_id": "704325582774613",
+                    "access_token": "EAAaWkIcIQjgBQUbFPfJkTDLWkjxSul4bZAQl3QisAThD0aFYfZCySFZCJ87wkLPkexAQZB7VZAjKHKWNvV6NTFbucWMrEpl6OcDRgDc6LjfkRjqqIa7aBfsjyaJr5FDNoEJClY2L0UBt4dBxABm7ZAxNZA17E3YEidZA36mx6aeHu8c7JmnRD3tMMSkqjclId3lzogbiJZAkyPDobdZC56vCeJiDx9",
+                    "hashtags": [],
+                    "fomo_titles": [],
+                    "affiliate_links": [],
+                    "captions": []
+                },
+                "Tắm & chăm sóc cơ thể": {
+                    "page_id": "",
+                    "access_token": "",
+                    "hashtags": []
+                },
+                "Trang điểm": {
+                    "page_id": "",
+                    "access_token": "",
+                    "hashtags": []
+                },
+                "Chăm sóc tóc": {
+                    "page_id": "",
+                    "access_token": "",
+                    "hashtags": []
+                },
+                "Dụng cụ & Phụ kiện làm đẹp": {
+                    "page_id": "",
+                    "access_token": "",
+                    "hashtags": []
+                },
+                "Vệ sinh răng miệng": {
+                    "page_id": "",
+                    "access_token": "",
+                    "hashtags": []
+                },
+                "Nước hoa": {
+                    "page_id": "",
+                    "access_token": "",
+                    "hashtags": []
+                },
+                "Chăm sóc nam giới": {
+                    "page_id": "",
+                    "access_token": "",
+                    "hashtags": []
+                },
+                "Chăm sóc phụ nữ": {
+                    "page_id": "",
+                    "access_token": "",
+                    "hashtags": []
+                },
+                "Bộ sản phẩm làm đẹp": {
+                    "page_id": "",
+                    "access_token": "",
+                    "hashtags": []
+                }
+            }
         },
         "Sức Khỏe": {
             "sub_categories": {}
@@ -294,6 +348,10 @@
     },
     "saved_fanpages": {
         "Góc săn Deal chất lượng": {
+            "page_id": "704325582774613",
+            "access_token": "EAAaWkIcIQjgBQUbFPfJkTDLWkjxSul4bZAQl3QisAThD0aFYfZCySFZCJ87wkLPkexAQZB7VZAjKHKWNvV6NTFbucWMrEpl6OcDRgDc6LjfkRjqqIa7aBfsjyaJr5FDNoEJClY2L0UBt4dBxABm7ZAxNZA17E3YEidZA36mx6aeHu8c7JmnRD3tMMSkqjclId3lzogbiJZAkyPDobdZC56vCeJiDx9"
+        },
+        "Góc săn deal chất lượng": {
             "page_id": "704325582774613",
             "access_token": "EAAaWkIcIQjgBQUbFPfJkTDLWkjxSul4bZAQl3QisAThD0aFYfZCySFZCJ87wkLPkexAQZB7VZAjKHKWNvV6NTFbucWMrEpl6OcDRgDc6LjfkRjqqIa7aBfsjyaJr5FDNoEJClY2L0UBt4dBxABm7ZAxNZA17E3YEidZA36mx6aeHu8c7JmnRD3tMMSkqjclId3lzogbiJZAkyPDobdZC56vCeJiDx9"
         }
