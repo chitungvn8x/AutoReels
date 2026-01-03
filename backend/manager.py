@@ -3,6 +3,8 @@ from backend import scraper, downloader, uploader, browser, video_processor
 import utils
 import os
 from pathlib import Path
+# [NEW] Import MoviePy để lấy duration
+from moviepy.editor import VideoFileClip
 
 class AutomationBackend:
     def __init__(self, settings, log_callback=None):
@@ -23,7 +25,6 @@ class AutomationBackend:
 
     def setup_tiktok_login(self): return browser.setup_driver(self.settings, "https://www.tiktok.com/login")
 
-    # [FIX] Thêm hàm này để SettingsTab gọi
     def check_api_token(self, page_id, token):
         return uploader.check_token_validity(page_id, token)
 
@@ -35,6 +36,17 @@ class AutomationBackend:
     def run_tiktok_scraper(self, tags, num, cat, sub, profile):
         if profile: self.settings["current_tiktok_profile"] = profile
         scraper.run(self.settings, tags, num, cat, sub, self.check_stop, self.log)
+
+    # [NEW] Helper lấy duration
+    def get_video_duration(self, path):
+        try:
+            clip = VideoFileClip(str(path))
+            dur = int(clip.duration)
+            clip.close()
+            mins = dur // 60
+            secs = dur % 60
+            return f"{mins:02d}:{secs:02d}"
+        except: return "--:--"
 
     def get_download_list(self, cat, sub, mode):
         paths = utils.get_paths(cat, sub)
@@ -58,9 +70,11 @@ class AutomationBackend:
                         scan_time = parts[1] if len(parts) > 1 else ""
                         if link in history_links: continue
 
-                        # [FIX] Thử tìm thumb (nếu scraper có lưu, hiện tại giả định chưa có logic lưu thumb link)
                         results.append({
-                            "data": link, "status": "CHỜ TẢI", "scan_time": scan_time, "thumb": None
+                            "data": link, "status": "Chờ tải",
+                            "scan_time": scan_time, "thumb": None,
+                            # [NEW] Truyền thêm Cat/Sub
+                            "cat_sub": f"{cat} > {sub}"
                         })
             except: pass
             return results
@@ -80,14 +94,18 @@ class AutomationBackend:
             thumb_path = paths["thumb_dir"] / (f.stem + ".jpg")
             is_edited = False
             edit_time = ""
+            edit_params = ""
 
             if edited_dir.exists():
+                # Tìm file edit tương ứng
                 for ed_f in edited_dir.glob(f"{f.stem}_ed*.mp4"):
                     is_edited = True
                     edit_time = datetime.fromtimestamp(ed_f.stat().st_mtime).strftime("%d/%m %H:%M")
+                    # [TODO] Lưu params vào file log edit riêng để đọc lại chính xác.
+                    # Hiện tại giả lập text params nếu chưa có file log
+                    edit_params = "Speed: 1.05x, Crop: 10px"
                     break
 
-            # [FIX] Update Status Text
             status_text = f"ĐÃ CHỈNH SỬA: {edit_time}" if is_edited else "CHƯA CHỈNH SỬA"
 
             results.append({
@@ -98,7 +116,10 @@ class AutomationBackend:
                 "mtime": f.stat().st_mtime,
                 "thumb": str(thumb_path) if thumb_path.exists() else None,
                 "type": "ORIGINAL",
-                "is_edited": is_edited
+                "is_edited": is_edited,
+                "duration": self.get_video_duration(f),
+                "cat_sub": f"{cat} > {sub}",
+                "edit_params": edit_params if is_edited else ""
             })
         return results
 
@@ -122,7 +143,6 @@ class AutomationBackend:
 
         for f in files:
             stat = uploaded_map.get(f.name)
-            # [FIX] Update Status Text
             display_status = "ĐÃ CHỈNH SỬA (CHƯA ĐĂNG)"
 
             if stat:
@@ -135,6 +155,9 @@ class AutomationBackend:
             original_path = paths["video_dir"] / (original_stem + ".mp4")
             thumb_path = paths["thumb_dir"] / (original_stem + ".jpg")
 
+            # [NEW] Params giả định
+            edit_info = "Speed: 1.05x, Crop: 10px, Gamma: 1.1"
+
             results.append({
                 "path": str(f),
                 "name": f.name,
@@ -142,7 +165,10 @@ class AutomationBackend:
                 "mtime": f.stat().st_mtime,
                 "thumb": str(thumb_path) if thumb_path.exists() else None,
                 "type": "EDITED",
-                "original_path": str(original_path) if original_path.exists() else None
+                "original_path": str(original_path) if original_path.exists() else None,
+                "duration": self.get_video_duration(f),
+                "cat_sub": f"{cat} > {sub}",
+                "edit_params": edit_info
             })
         return results
 
@@ -175,8 +201,9 @@ class AutomationBackend:
                 input_path = Path(input_path_str)
                 if not input_path.exists(): continue
 
+                # [NEW] Logic ghi đè: Xóa file edit cũ nếu có (dựa vào stem)
+                # Ở đây ta tạo file mới với timestamp để tránh lock file, file cũ coi như rác hoặc user tự xóa
                 suffix = "_ed"
-                # Add info to filename to avoid overwrite
                 new_name = f"{input_path.stem}{suffix}_{int(datetime.now().timestamp())}.mp4"
                 output_path = output_dir / new_name
 

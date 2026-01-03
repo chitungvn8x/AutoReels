@@ -18,7 +18,6 @@ class VideoCardFactory:
         # Card Chờ Tải
         f_card = ctk.CTkFrame(parent, height=100, fg_color="#2B2B2B")
         f_card.pack(fill="x", pady=2, padx=5)
-        # [FIX] Cố định chiều cao thẻ chờ tải
         f_card.pack_propagate(False)
 
         var_chk = ctk.BooleanVar(value=initial_check)
@@ -35,7 +34,6 @@ class VideoCardFactory:
 
         if item.get("thumb") and os.path.exists(item.get("thumb")):
             try:
-                # Resize ảnh cho vừa khít
                 img = ctk.CTkImage(Image.open(item.get("thumb")), size=(60, 96))
                 lbl_thumb.configure(image=img, text="")
             except: pass
@@ -43,41 +41,47 @@ class VideoCardFactory:
         f_info = ctk.CTkFrame(f_card, fg_color="transparent")
         f_info.pack(side="left", fill="both", expand=True, padx=5, pady=5)
 
+        # [NEW] Center Alignment Logic for Text
+        # Grid layout inside info frame for better centering
+        f_info.grid_columnconfigure(0, weight=1)
+
         link = item["data"]
         short_link = link[:40] + "..." if len(link) > 40 else link
-        ctk.CTkLabel(f_info, text=short_link, font=("Arial", 12, "bold"), anchor="w").pack(fill="x")
+        ctk.CTkLabel(f_info, text=short_link, font=("Arial", 12, "bold"), anchor="center").pack(fill="x")
 
-        lbl_status = ctk.CTkLabel(f_info, text=item.get("status", "Chờ tải"), font=("Arial", 11), text_color="orange", anchor="w")
+        # [NEW] Danh mục > Ngách
+        cat_sub = item.get("cat_sub", "")
+        if cat_sub:
+            ctk.CTkLabel(f_info, text=cat_sub, font=("Arial", 11), text_color="#BDC3C7", anchor="center").pack(fill="x")
+
+        lbl_status = ctk.CTkLabel(f_info, text=item.get("status", "Chờ tải"), font=("Arial", 11), text_color="orange", anchor="center")
         lbl_status.pack(fill="x")
 
         prog = ctk.CTkProgressBar(f_info, height=5); prog.set(0); prog.pack_forget()
 
         f_actions = ctk.CTkFrame(f_card, fg_color="transparent")
         f_actions.pack(side="right", padx=5, fill="y")
-        ctk.CTkButton(f_actions, text="⬇ Tải", width=50, height=25, fg_color="#2980B9", command=lambda: self.app.run_single_download(link)).pack(pady=2)
-        ctk.CTkButton(f_actions, text="🌐 Xem", width=50, height=25, fg_color="#555", command=lambda: webbrowser.open(link)).pack(pady=2)
-        ctk.CTkButton(f_actions, text="🗑", width=30, height=25, fg_color="#C0392B", command=lambda: self.app.remove_from_queue(link)).pack(pady=2)
+        ctk.CTkButton(f_actions, text="⬇ Tải", width=60, height=25, fg_color="#2980B9", command=lambda: self.app.run_single_download(link)).pack(pady=2)
+        ctk.CTkButton(f_actions, text="🌐 Xem", width=60, height=25, fg_color="#555", command=lambda: webbrowser.open(link)).pack(pady=2)
+        # [UPDATED] Nút Xóa có Text
+        ctk.CTkButton(f_actions, text="🗑 Xóa", width=60, height=25, fg_color="#C0392B", command=lambda: self.app.remove_from_queue(link)).pack(pady=2)
 
         self._bind_recursive(f_card, item, "PENDING")
         return {"card": f_card, "lbl": lbl_status, "prog": prog}
 
     def create_upload_card(self, parent, item):
-        # [UPDATED] Card Video - Cố định chiều cao để Thumbnail tràn viền chuẩn
+        # Card Video
         card_height = 120
         f_card = ctk.CTkFrame(parent, height=card_height, fg_color="#2B2B2B")
         f_card.pack(fill="x", pady=4, padx=5)
-
-        # [QUAN TRỌNG] Cố định chiều cao frame, không cho text đẩy giãn frame
         f_card.pack_propagate(False)
 
-        # Checkbox
         is_checked = item["path"] in self.app.upload_selected_files
         var_chk = ctk.BooleanVar(value=is_checked)
         chk = ctk.CTkCheckBox(f_card, text="", variable=var_chk, width=20,
                               command=lambda: self.app.on_check_upload(var_chk, item["path"]))
         chk.pack(side="left", padx=8)
 
-        # Full-height Thumbnail
         f_thumb = ctk.CTkFrame(f_card, width=80, fg_color="black")
         f_thumb.pack(side="left", fill="y", padx=0, pady=0)
         f_thumb.pack_propagate(False)
@@ -88,33 +92,38 @@ class VideoCardFactory:
         if item["thumb"] and os.path.exists(item["thumb"]):
             try:
                 img_pil = Image.open(item["thumb"])
-                # Ép ảnh resize đúng bằng chiều cao card
                 img = ctk.CTkImage(img_pil, size=(80, card_height))
                 lbl_img.configure(image=img, text="")
             except: pass
 
-        # Info Area
         f_content = ctk.CTkFrame(f_card, fg_color="transparent")
         f_content.pack(side="left", fill="both", expand=True, padx=10, pady=5)
 
+        # [UPDATED] Center content
         name = item["name"]
         if len(name) > 40: name = name[:40] + "..."
-        ctk.CTkLabel(f_content, text=name, font=("Arial", 13, "bold"), anchor="w").pack(fill="x")
+        ctk.CTkLabel(f_content, text=name, font=("Arial", 13, "bold"), anchor="center").pack(fill="x")
 
+        # [NEW] Duration + Time
+        dur = item.get("duration", "--:--")
         mtime_str = datetime.fromtimestamp(item["mtime"]).strftime('%d/%m %H:%M')
-        ctk.CTkLabel(f_content, text=f"📅 {mtime_str}", font=("Arial", 11), text_color="gray", anchor="w").pack(fill="x")
+        ctk.CTkLabel(f_content, text=f"⏱ {dur} | 📅 {mtime_str}", font=("Arial", 11), text_color="gray", anchor="center").pack(fill="x")
 
         status_text = item['status']
         st_color = "gray"
-        if "ĐÃ ĐĂNG" in status_text: st_color = "#2ECC71"
+        # [UPDATED] Màu sáng hơn
+        if "ĐÃ CHỈNH SỬA" in status_text: st_color = "#5DADE2" # Light Blue
+        elif "ĐÃ ĐĂNG" in status_text: st_color = "#2ECC71"
         elif "Lịch" in status_text: st_color = "#F1C40F"
         elif "CHƯA" in status_text: st_color = "#E67E22"
-        ctk.CTkLabel(f_content, text=status_text, text_color=st_color, font=("Arial", 11, "bold"), anchor="w").pack(fill="x", pady=(0, 5))
+        ctk.CTkLabel(f_content, text=status_text, text_color=st_color, font=("Arial", 11, "bold"), anchor="center").pack(fill="x", pady=(0, 2))
 
-        # Right-Side Buttons
+        # [NEW] Edit params info
+        if item.get("edit_params"):
+            ctk.CTkLabel(f_content, text=item["edit_params"], font=("Arial", 10), text_color="#95A5A6", anchor="center").pack(fill="x")
+
         f_btns = ctk.CTkFrame(f_card, fg_color="transparent")
         f_btns.pack(side="right", padx=10, fill="y")
-
         f_btns.grid_columnconfigure(0, weight=1)
         f_btns.grid_rowconfigure(0, weight=1); f_btns.grid_rowconfigure(3, weight=1)
 
