@@ -15,7 +15,6 @@ class VideoCardFactory:
         for child in widget.winfo_children(): self._bind_recursive(child, item, menu_type)
 
     def create_queue_card(self, parent, item, initial_check=False):
-        # Card Chờ Tải
         f_card = ctk.CTkFrame(parent, height=100, fg_color="#2B2B2B")
         f_card.pack(fill="x", pady=2, padx=5)
         f_card.pack_propagate(False)
@@ -25,13 +24,11 @@ class VideoCardFactory:
                               command=lambda: self.app.on_check_dl(var_chk, item["data"]))
         chk.pack(side="left", padx=5)
 
-        # Thumbnail
         f_thumb = ctk.CTkFrame(f_card, width=60, height=90, fg_color="#111")
         f_thumb.pack(side="left", fill="y", padx=2, pady=2)
         f_thumb.pack_propagate(False)
         lbl_thumb = ctk.CTkLabel(f_thumb, text="TIKTOK", font=("Arial", 8), text_color="gray")
         lbl_thumb.pack(expand=True, fill="both")
-
         if item.get("thumb") and os.path.exists(item.get("thumb")):
             try:
                 img = ctk.CTkImage(Image.open(item.get("thumb")), size=(60, 96))
@@ -41,36 +38,38 @@ class VideoCardFactory:
         f_info = ctk.CTkFrame(f_card, fg_color="transparent")
         f_info.pack(side="left", fill="both", expand=True, padx=5, pady=5)
 
-        # [NEW] Center Alignment Logic for Text
-        # Grid layout inside info frame for better centering
-        f_info.grid_columnconfigure(0, weight=1)
-
+        # [UPDATED] Left Align (anchor="w")
         link = item["data"]
         short_link = link[:40] + "..." if len(link) > 40 else link
-        ctk.CTkLabel(f_info, text=short_link, font=("Arial", 12, "bold"), anchor="center").pack(fill="x")
+        ctk.CTkLabel(f_info, text=short_link, font=("Arial", 12, "bold"), anchor="w").pack(fill="x")
 
-        # [NEW] Danh mục > Ngách
         cat_sub = item.get("cat_sub", "")
         if cat_sub:
-            ctk.CTkLabel(f_info, text=cat_sub, font=("Arial", 11), text_color="#BDC3C7", anchor="center").pack(fill="x")
+            ctk.CTkLabel(f_info, text=cat_sub, font=("Arial", 11), text_color="#BDC3C7", anchor="w").pack(fill="x")
 
-        lbl_status = ctk.CTkLabel(f_info, text=item.get("status", "Chờ tải"), font=("Arial", 11), text_color="orange", anchor="center")
+        status_raw = item.get("status", "Chờ tải")
+        lbl_status = ctk.CTkLabel(f_info, text=status_raw.upper(), font=("Arial", 11, "bold"), text_color="orange", anchor="w")
         lbl_status.pack(fill="x")
 
-        prog = ctk.CTkProgressBar(f_info, height=5); prog.set(0); prog.pack_forget()
+        # Progress + % Label
+        f_prog = ctk.CTkFrame(f_info, fg_color="transparent")
+        f_prog.pack(fill="x", pady=2, anchor="w")
+        prog = ctk.CTkProgressBar(f_prog, height=8, width=150)
+        prog.set(0)
+        prog.pack_forget()
+        lbl_pct = ctk.CTkLabel(f_prog, text="", font=("Arial", 10), text_color="cyan")
+        lbl_pct.pack_forget()
 
         f_actions = ctk.CTkFrame(f_card, fg_color="transparent")
         f_actions.pack(side="right", padx=5, fill="y")
         ctk.CTkButton(f_actions, text="⬇ Tải", width=60, height=25, fg_color="#2980B9", command=lambda: self.app.run_single_download(link)).pack(pady=2)
         ctk.CTkButton(f_actions, text="🌐 Xem", width=60, height=25, fg_color="#555", command=lambda: webbrowser.open(link)).pack(pady=2)
-        # [UPDATED] Nút Xóa có Text
         ctk.CTkButton(f_actions, text="🗑 Xóa", width=60, height=25, fg_color="#C0392B", command=lambda: self.app.remove_from_queue(link)).pack(pady=2)
 
         self._bind_recursive(f_card, item, "PENDING")
-        return {"card": f_card, "lbl": lbl_status, "prog": prog}
+        return {"card": f_card, "lbl": lbl_status, "prog": prog, "pct": lbl_pct}
 
     def create_upload_card(self, parent, item):
-        # Card Video
         card_height = 120
         f_card = ctk.CTkFrame(parent, height=card_height, fg_color="#2B2B2B")
         f_card.pack(fill="x", pady=4, padx=5)
@@ -88,7 +87,6 @@ class VideoCardFactory:
 
         lbl_img = ctk.CTkLabel(f_thumb, text="NO IMG", font=("Arial", 10))
         lbl_img.pack(expand=True, fill="both")
-
         if item["thumb"] and os.path.exists(item["thumb"]):
             try:
                 img_pil = Image.open(item["thumb"])
@@ -99,28 +97,39 @@ class VideoCardFactory:
         f_content = ctk.CTkFrame(f_card, fg_color="transparent")
         f_content.pack(side="left", fill="both", expand=True, padx=10, pady=5)
 
-        # [UPDATED] Center content
+        # [UPDATED] Left Align (anchor="w")
         name = item["name"]
         if len(name) > 40: name = name[:40] + "..."
-        ctk.CTkLabel(f_content, text=name, font=("Arial", 13, "bold"), anchor="center").pack(fill="x")
+        ctk.CTkLabel(f_content, text=name, font=("Arial", 13, "bold"), anchor="w").pack(fill="x")
 
-        # [NEW] Duration + Time
         dur = item.get("duration", "--:--")
         mtime_str = datetime.fromtimestamp(item["mtime"]).strftime('%d/%m %H:%M')
-        ctk.CTkLabel(f_content, text=f"⏱ {dur} | 📅 {mtime_str}", font=("Arial", 11), text_color="gray", anchor="center").pack(fill="x")
+        # [UPDATED] Brighter text color
+        ctk.CTkLabel(f_content, text=f"⏱ {dur} | 📅 {mtime_str}", font=("Arial", 11), text_color="#F0F0F0", anchor="w").pack(fill="x")
 
         status_text = item['status']
         st_color = "gray"
-        # [UPDATED] Màu sáng hơn
-        if "ĐÃ CHỈNH SỬA" in status_text: st_color = "#5DADE2" # Light Blue
-        elif "ĐÃ ĐĂNG" in status_text: st_color = "#2ECC71"
-        elif "Lịch" in status_text: st_color = "#F1C40F"
-        elif "CHƯA" in status_text: st_color = "#E67E22"
-        ctk.CTkLabel(f_content, text=status_text, text_color=st_color, font=("Arial", 11, "bold"), anchor="center").pack(fill="x", pady=(0, 2))
 
-        # [NEW] Edit params info
-        if item.get("edit_params"):
-            ctk.CTkLabel(f_content, text=item["edit_params"], font=("Arial", 10), text_color="#95A5A6", anchor="center").pack(fill="x")
+        # [UPDATED] Realtime Status Logic
+        if item["path"] in self.app.processing_files:
+            status_text = "⏳ ĐANG CHỈNH SỬA VIDEO NÀY | VUI LÒNG ĐỢI..."
+            st_color = "#F39C12"
+        elif item["path"] in self.app.queue_files:
+            status_text = "⏳ ĐANG TRONG HÀNG ĐỢI..."
+            st_color = "orange"
+
+        if "ĐÃ CHỈNH SỬA" in status_text: st_color = "#5DADE2"
+        elif "ĐÃ ĐĂNG" in status_text:
+            st_color = "#2ECC71"
+            if item.get("publish_time"): status_text += f"\n{item['publish_time']}"
+        elif "LỊCH" in status_text:
+            st_color = "#F1C40F"
+        elif "CHƯA" in status_text: st_color = "#E67E22"
+
+        ctk.CTkLabel(f_content, text=status_text, text_color=st_color, font=("Arial", 11, "bold"), anchor="w").pack(fill="x", pady=(2, 2))
+
+        if item.get("type") == "ORIGINAL" and item.get("cat_sub"):
+            ctk.CTkLabel(f_content, text=item["cat_sub"], font=("Arial", 10), text_color="#BDC3C7", anchor="w").pack(fill="x")
 
         f_btns = ctk.CTkFrame(f_card, fg_color="transparent")
         f_btns.pack(side="right", padx=10, fill="y")

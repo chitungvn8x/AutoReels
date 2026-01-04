@@ -1,278 +1,136 @@
 {
-    "chrome_user_data": "C:/ChromeProfiles/RecraftBot",
+    "chrome_user_data": "C:\\ChromeProfiles\\RecraftBot",
     "chrome_profile": "Profile 2",
     "default_download_dir": "C:\\Users\\chitu\\Downloads",
     "upload_delay_minutes": 5,
-    "current_tiktok_profile": "DarkWords",
+    "current_tiktok_profile": "",
     "categories": {
         "Phụ Kiện & Trang Sức Nữ": {
             "sub_categories": {
                 "Nhẫn": {
-                    "page_id": "704325582774613",
-                    "access_token": "EAAaWkIcIQjgBQUbFPfJkTDLWkjxSul4bZAQl3QisAThD0aFYfZCySFZCJ87wkLPkexAQZB7VZAjKHKWNvV6NTFbucWMrEpl6OcDRgDc6LjfkRjqqIa7aBfsjyaJr5FDNoEJClY2L0UBt4dBxABm7ZAxNZA17E3YEidZA36mx6aeHu8c7JmnRD3tMMSkqjclId3lzogbiJZAkyPDobdZC56vCeJiDx9",
-                    "captions": [],
-                    "hashtags": [
-                        "tag1, tag2, tag3..."
-                    ],
-                    "affiliate_links": [
-                        "Mỗi link 1 dòng..."
-                    ],
-                    "fomo_titles": [
-                        "Mỗi tiêu đề 1 dòng..."
-                    ]
-                },
-                "Bông Tai": {
-                    "page_id": "704325582774613",
-                    "access_token": "EAAaWkIcIQjgBQUbFPfJkTDLWkjxSul4bZAQl3QisAThD0aFYfZCySFZCJ87wkLPkexAQZB7VZAjKHKWNvV6NTFbucWMrEpl6OcDRgDc6LjfkRjqqIa7aBfsjyaJr5FDNoEJClY2L0UBt4dBxABm7ZAxNZA17E3YEidZA36mx6aeHu8c7JmnRD3tMMSkqjclId3lzogbiJZAkyPDobdZC56vCeJiDx9",
-                    "captions": [],
-                    "hashtags": [
-                        "tag1, tag2, tag3..."
-                    ],
-                    "affiliate_links": [
-                        "Mỗi link 1 dòng..."
-                    ],
-                    "fomo_titles": [
-                        "Mỗi tiêu đề 1 dòng..."
-                    ]
-                },
-                "Khăn Choàng": {
                     "page_id": "",
-                    "access_token": "",
-                    "captions": [],
-                    "hashtags": [],
-                    "affiliate_links": [],
-                    "fomo_titles": []
+                    "access_token": ""
                 },
-                "Găng Tay": {
+                "Bông tai": {
                     "page_id": "",
-                    "access_token": "",
-                    "captions": [],
-                    "hashtags": [],
-                    "affiliate_links": [],
-                    "fomo_titles": []
+                    "access_token": ""
                 },
-                "Phụ Kiện Tóc": {
+                "Khăn choàng": {
                     "page_id": "",
-                    "access_token": "",
-                    "captions": [],
-                    "hashtags": [],
-                    "affiliate_links": [],
-                    "fomo_titles": []
+                    "access_token": ""
                 },
-                "Vòng Tay & Lắc Tay": {
+                "Găng tay": {
                     "page_id": "",
-                    "access_token": "",
-                    "captions": [],
-                    "hashtags": [],
-                    "affiliate_links": [],
-                    "fomo_titles": []
+                    "access_token": ""
                 },
-                "Lắc Chân": {
+                "Phụ kiện tóc": {
                     "page_id": "",
-                    "access_token": "",
-                    "captions": [],
-                    "hashtags": [],
-                    "affiliate_links": [],
-                    "fomo_titles": []
+                    "access_token": ""
+                },
+                "Vòng tay & Lắc tay": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Lắc chân": {
+                    "page_id": "",
+                    "access_token": ""
                 },
                 "Mũ": {
                     "page_id": "",
-                    "access_token": "",
-                    "captions": [],
-                    "hashtags": [],
-                    "affiliate_links": [],
-                    "fomo_titles": []
+                    "access_token": ""
                 },
-                "Dây Chuyền": {
+                "Dây chuyền": {
                     "page_id": "",
-                    "access_token": "",
-                    "captions": [],
-                    "hashtags": [],
-                    "affiliate_links": [],
-                    "fomo_titles": []
+                    "access_token": ""
                 },
-                "Kính Mắt": {
+                "Kính mắt": {
                     "page_id": "",
-                    "access_token": "",
-                    "captions": [],
-                    "hashtags": [],
-                    "affiliate_links": [],
-                    "fomo_titles": []
+                    "access_token": ""
                 },
-                "Kim Loại Quý": {
+                "Kim loại quý": {
                     "page_id": "",
-                    "access_token": "",
-                    "captions": [],
-                    "hashtags": [],
-                    "affiliate_links": [],
-                    "fomo_titles": []
+                    "access_token": ""
                 },
-                "Thắt Lưng": {
+                "Thắt lưng": {
                     "page_id": "",
-                    "access_token": "",
-                    "captions": [],
-                    "hashtags": [],
-                    "affiliate_links": [],
-                    "fomo_titles": []
+                    "access_token": ""
                 },
-                "Cà Vạt & Nơ Cổ": {
+                "Cà vạt & Nơ cổ": {
                     "page_id": "",
-                    "access_token": "",
-                    "captions": [],
-                    "hashtags": [],
-                    "affiliate_links": [],
-                    "fomo_titles": []
+                    "access_token": ""
                 },
-                "Phụ Kiện Thêm": {
+                "Phụ kiện thêm": {
                     "page_id": "",
-                    "access_token": "",
-                    "captions": [],
-                    "hashtags": [],
-                    "affiliate_links": [],
-                    "fomo_titles": []
+                    "access_token": ""
                 },
-                "Bộ Phụ Kiện": {
+                "Bộ phụ kiện": {
                     "page_id": "",
-                    "access_token": "",
-                    "captions": [],
-                    "hashtags": [],
-                    "affiliate_links": [],
-                    "fomo_titles": []
+                    "access_token": ""
                 },
                 "Khác": {
                     "page_id": "",
-                    "access_token": "",
-                    "captions": [],
-                    "hashtags": [],
-                    "affiliate_links": [],
-                    "fomo_titles": []
+                    "access_token": ""
                 },
                 "Vớ/ Tất": {
                     "page_id": "",
-                    "access_token": "",
-                    "captions": [],
-                    "hashtags": [],
-                    "affiliate_links": [],
-                    "fomo_titles": []
+                    "access_token": ""
                 },
                 "Ô/Dù": {
                     "page_id": "",
-                    "access_token": "",
-                    "captions": [],
-                    "hashtags": [],
-                    "affiliate_links": [],
-                    "fomo_titles": []
-                },
-                "TEST": {
-                    "page_id": "",
-                    "access_token": "",
-                    "fomo_titles": [],
-                    "affiliate_links": [],
-                    "hashtags": [],
-                    "captions": []
+                    "access_token": ""
                 }
             }
         },
         "Sắc Đẹp": {
             "sub_categories": {
                 "Chăm sóc da mặt": {
-                    "page_id": "704325582774613",
-                    "access_token": "EAAaWkIcIQjgBQUbFPfJkTDLWkjxSul4bZAQl3QisAThD0aFYfZCySFZCJ87wkLPkexAQZB7VZAjKHKWNvV6NTFbucWMrEpl6OcDRgDc6LjfkRjqqIa7aBfsjyaJr5FDNoEJClY2L0UBt4dBxABm7ZAxNZA17E3YEidZA36mx6aeHu8c7JmnRD3tMMSkqjclId3lzogbiJZAkyPDobdZC56vCeJiDx9",
-                    "hashtags": [],
-                    "fomo_titles": [],
-                    "affiliate_links": [],
-                    "captions": []
+                    "page_id": "",
+                    "access_token": ""
                 },
                 "Tắm & chăm sóc cơ thể": {
                     "page_id": "",
-                    "access_token": "",
-                    "hashtags": []
+                    "access_token": ""
                 },
                 "Trang điểm": {
                     "page_id": "",
-                    "access_token": "",
-                    "hashtags": []
+                    "access_token": ""
                 },
                 "Chăm sóc tóc": {
                     "page_id": "",
-                    "access_token": "",
-                    "hashtags": []
+                    "access_token": ""
                 },
                 "Dụng cụ & Phụ kiện làm đẹp": {
                     "page_id": "",
-                    "access_token": "",
-                    "hashtags": []
+                    "access_token": ""
                 },
                 "Vệ sinh răng miệng": {
                     "page_id": "",
-                    "access_token": "",
-                    "hashtags": []
+                    "access_token": ""
                 },
                 "Nước hoa": {
                     "page_id": "",
-                    "access_token": "",
-                    "hashtags": []
+                    "access_token": ""
                 },
                 "Chăm sóc nam giới": {
                     "page_id": "",
-                    "access_token": "",
-                    "hashtags": []
+                    "access_token": ""
+                },
+                "Khác": {
+                    "page_id": "",
+                    "access_token": ""
                 },
                 "Chăm sóc phụ nữ": {
                     "page_id": "",
-                    "access_token": "",
-                    "hashtags": []
+                    "access_token": ""
                 },
                 "Bộ sản phẩm làm đẹp": {
                     "page_id": "",
-                    "access_token": "",
-                    "hashtags": []
+                    "access_token": ""
                 }
             }
         },
         "Sức Khỏe": {
-            "sub_categories": {
-                "Vật tư y tế": {
-                    "page_id": "",
-                    "access_token": "",
-                    "hashtags": []
-                },
-                "Chống muỗi & xua đuổi côn trùng": {
-                    "page_id": "",
-                    "access_token": "",
-                    "hashtags": []
-                },
-                "Thực phẩm chức năng": {
-                    "page_id": "",
-                    "access_token": "",
-                    "hashtags": []
-                },
-                "Tã người lớn": {
-                    "page_id": "",
-                    "access_token": "",
-                    "hashtags": []
-                },
-                "Hỗ trợ làm đẹp": {
-                    "page_id": "",
-                    "access_token": "",
-                    "hashtags": []
-                },
-                "Hỗ trợ tình dục": {
-                    "page_id": "",
-                    "access_token": "",
-                    "hashtags": []
-                },
-                "Dụng cụ massage và trị liệu": {
-                    "page_id": "",
-                    "access_token": "",
-                    "hashtags": []
-                },
-                "Khác": {
-                    "page_id": "",
-                    "access_token": "",
-                    "hashtags": []
-                }
-            }
+            "sub_categories": {}
         },
         "Thiết Bị Điện Gia Dụng": {
             "sub_categories": {
@@ -314,13 +172,236 @@
             "sub_categories": {}
         },
         "Thể Thao & Du Lịch": {
-            "sub_categories": {}
+            "sub_categories": {
+                "Vali": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Túi du lịch": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Phụ kiện du lịch": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Dụng Cụ Thể Thao & Dã Ngoại": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Giày Thể Thao": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Thời Trang Thể Thao & Dã Ngoại": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Phụ Kiện Thể Thao & Dã Ngoại": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Khác": {
+                    "page_id": "",
+                    "access_token": ""
+                }
+            }
         },
         "Thời Trang Nam": {
-            "sub_categories": {}
+            "sub_categories": {
+                "Áo Khoác": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Áo Vest và Blazer": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Áo Hoodie, Áo Len & Áo Nỉ": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Quần Jeans": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Quần Dài/Quần Âu": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Quần Short": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Áo": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Áo Ba Lỗ": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Đồ Lót": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Đồ Ngủ": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Đồ Bộ": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Vớ/Tất": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Trang Phục Truyền Thống": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Đồ Hóa Trang": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Trang Phục Ngành Nghề": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Khác": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Trang Sức Nam": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Kính Mắt Nam": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Thắt Lưng Nam": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Cà vạt & Nơ cổ": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Phụ Kiện Nam": {
+                    "page_id": "",
+                    "access_token": ""
+                }
+            }
         },
         "Thời Trang Nữ": {
-            "sub_categories": {}
+            "sub_categories": {
+                "Quần": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Quần đùi": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Chân váy": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Quần jeans": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Đầm/Váy": {
+                    "page_id": "704325582774613",
+                    "access_token": "EAAaWkIcIQjgBQUbFPfJkTDLWkjxSul4bZAQl3QisAThD0aFYfZCySFZCJ87wkLPkexAQZB7VZAjKHKWNvV6NTFbucWMrEpl6OcDRgDc6LjfkRjqqIa7aBfsjyaJr5FDNoEJClY2L0UBt4dBxABm7ZAxNZA17E3YEidZA36mx6aeHu8c7JmnRD3tMMSkqjclId3lzogbiJZAkyPDobdZC56vCeJiDx9",
+                    "fomo_titles": [
+                        "“90% chị em bỏ lỡ kiểu đầm này… tiếc thật sự!”",
+                        "“Không cần gầy vẫn mặc đẹp – mẫu đầm này đang viral”",
+                        "“Mặc lên là có người hỏi link liền 😳”",
+                        "“Đầm này mà không mua thì mùa này coi như uổng!”",
+                        "“Chị em thấp – bụng mỡ xem ngay mẫu này!”"
+                    ],
+                    "affiliate_links": [
+                        "https://s.shopee.vn/3VdilkfdD6",
+                        "https://s.shopee.vn/3LKIZRgGY5",
+                        "https://s.shopee.vn/3qGZAMeMXC",
+                        "https://s.shopee.vn/3fx8y3ezsB",
+                        "https://s.shopee.vn/2qO1yWiAZ2"
+                    ],
+                    "hashtags": [
+                        "#DamVayNuXinh"
+                    ],
+                    "captions": [
+                        "Mẫu đầm này đang được hỏi link liên tục, chị em xem tới cuối là hiểu liền 👗✨",
+                        "Không cần gầy vẫn mặc đẹp, kiểu đầm này đang được nhiều người chọn lắm đó 😍",
+                        "Mặc lên là có người hỏi mua ngay, ai thấy hợp dáng mình không nè 😳",
+                        "Đi chơi hay đi làm mặc cũng xinh, mẫu đầm này đúng kiểu dễ ghi điểm luôn 🌸",
+                        "Ai đang tìm đầm dễ mặc, che dáng, giá ổn thì mẫu này rất đáng thử nha 💖"
+                    ]
+                },
+                "Váy cưới": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Đồ liền thân": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Áo khoác, Áo choàng & Vest": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Áo len & Cardigan": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Hoodie và Áo nỉ": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Bộ": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Đồ lót": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Đồ ngủ": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Áo": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Đồ tập": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Đồ Bầu": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Đồ truyền thống": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Đồ hóa trang": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Vải": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Vớ/ Tất": {
+                    "page_id": "",
+                    "access_token": ""
+                }
+            }
         },
         "Giặt Giũ & Chăm Sóc Nhà Cửa": {
             "sub_categories": {}
@@ -332,10 +413,132 @@
             "sub_categories": {}
         },
         "Mẹ & Bé": {
-            "sub_categories": {}
+            "sub_categories": {
+                "Đồ dùng du lịch cho bé": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Đồ dùng ăn dặm cho bé": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Phụ kiện cho mẹ": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Chăm sóc sức khỏe mẹ": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Đồ dùng phòng tắm & Chăm sóc cơ thể bé": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Đồ dùng phòng ngủ cho bé": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "An toàn cho bé": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Thực phẩm cho bé": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Chăm sóc sức khỏe bé": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Tã & bộ em bé": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Đồ chơi": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Bộ & Gói quà tặng": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Khác": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Sữa công thức trên 24 tháng": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Sữa công thức 0-24 tháng tuổi": {
+                    "page_id": "",
+                    "access_token": ""
+                }
+            }
         },
         "Nhà Cửa & Đời Sống": {
-            "sub_categories": {}
+            "sub_categories": {
+                "Chăn, Ga, Gối & Nệm": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Đồ nội thất": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Trang trí nhà cửa": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Dụng cụ & Thiết bị tiện ích": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Đồ dùng nhà bếp và hộp đựng thực phẩm": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Đèn": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Ngoài trời & Sân vườn": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Đồ dùng phòng tắm": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Vật phẩm thờ cúng": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Đồ trang trí tiệc": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Chăm sóc nhà cửa và giặt ủi": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Sắp xếp nhà cửa": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Dụng cụ pha chế": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Tinh dầu thơm phòng": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Đồ dùng phòng ăn": {
+                    "page_id": "",
+                    "access_token": ""
+                }
+            }
         },
         "Nhà Sách Online": {
             "sub_categories": {}
@@ -352,11 +555,56 @@
         "Chăm Sóc Thú Cưng": {
             "sub_categories": {}
         },
-        "Dụng Cụ Và Thiết Bị Tiện Ích": {
+        "Dụng cụ và thiết bị tiện ích": {
             "sub_categories": {}
         },
         "Điện Thoại & Phụ Kiện": {
-            "sub_categories": {}
+            "sub_categories": {
+                "Điện thoại": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Máy tính bảng": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Pin Dự Phòng": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Pin Gắn Trong, Cáp và Bộ Sạc": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Ốp lưng, bao da, Miếng dán điện thoại": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Bảo vệ màn hình": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Đế giữ điện thoại": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Thẻ nhớ": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Sim": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Phụ kiện khác": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Thiết bị khác": {
+                    "page_id": "",
+                    "access_token": ""
+                }
+            }
         },
         "Đồ Chơi": {
             "sub_categories": {}
@@ -365,26 +613,162 @@
             "sub_categories": {}
         },
         "Giày Dép Nam": {
-            "sub_categories": {}
+            "sub_categories": {
+                "Bốt": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Giày Thể Thao/ Sneakers": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Giày Sục": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Giày Tây Lười": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Giày Oxfords & Giày Buộc Dây": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Xăng-đan và Dép": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Phụ kiện giày dép": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Khác": {
+                    "page_id": "",
+                    "access_token": ""
+                }
+            }
         },
         "Giày Dép Nữ": {
-            "sub_categories": {}
+            "sub_categories": {
+                "Bốt": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Giày Thể Thao/ Sneaker": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Giày Đế Bằng": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Giày Cao Gót": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Giày Đế Xuồng": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Xăng-đan Và Dép": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Phụ Kiện Giày": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Giày Khác": {
+                    "page_id": "",
+                    "access_token": ""
+                }
+            }
         },
         "Thời Trang Trẻ Em": {
-            "sub_categories": {}
+            "sub_categories": {
+                "Trang phục bé trai": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Trang phục bé gái": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Giày dép bé trai": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Giày dép bé gái": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Khác": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Quần áo em bé": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Giày tập đi & Tất sơ sinh": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Phụ kiện trẻ em": {
+                    "page_id": "",
+                    "access_token": ""
+                }
+            }
         },
         "Túi Ví Nữ": {
-            "sub_categories": {}
+            "sub_categories": {
+                "Ba Lô Nữ": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Cặp Laptop": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Ví Dự Tiệc & Ví Cầm Tay": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Túi Đeo Hông & Túi Đeo Ngực": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Túi Tote": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Túi Quai Xách": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Túi Đeo Chéo & Túi Đeo Vai": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Ví/Bóp Nữ": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Phụ Kiện Túi": {
+                    "page_id": "",
+                    "access_token": ""
+                },
+                "Khác": {
+                    "page_id": "",
+                    "access_token": ""
+                }
+            }
         },
         "Voucher & Dịch Vụ": {
             "sub_categories": {}
         }
     },
     "saved_fanpages": {
-        "Góc săn Deal chất lượng": {
-            "page_id": "704325582774613",
-            "access_token": "EAAaWkIcIQjgBQUbFPfJkTDLWkjxSul4bZAQl3QisAThD0aFYfZCySFZCJ87wkLPkexAQZB7VZAjKHKWNvV6NTFbucWMrEpl6OcDRgDc6LjfkRjqqIa7aBfsjyaJr5FDNoEJClY2L0UBt4dBxABm7ZAxNZA17E3YEidZA36mx6aeHu8c7JmnRD3tMMSkqjclId3lzogbiJZAkyPDobdZC56vCeJiDx9"
-        },
         "Góc săn deal chất lượng": {
             "page_id": "704325582774613",
             "access_token": "EAAaWkIcIQjgBQUbFPfJkTDLWkjxSul4bZAQl3QisAThD0aFYfZCySFZCJ87wkLPkexAQZB7VZAjKHKWNvV6NTFbucWMrEpl6OcDRgDc6LjfkRjqqIa7aBfsjyaJr5FDNoEJClY2L0UBt4dBxABm7ZAxNZA17E3YEidZA36mx6aeHu8c7JmnRD3tMMSkqjclId3lzogbiJZAkyPDobdZC56vCeJiDx9"

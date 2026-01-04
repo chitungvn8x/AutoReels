@@ -3,7 +3,6 @@ from backend import scraper, downloader, uploader, browser, video_processor
 import utils
 import os
 from pathlib import Path
-# [NEW] Import MoviePy để lấy duration
 from moviepy.editor import VideoFileClip
 
 class AutomationBackend:
@@ -13,31 +12,31 @@ class AutomationBackend:
         self.stop_flag = False
 
     def log(self, msg):
-        timestamp = datetime.now().strftime("%H:%M:%S")
-        full_msg = f"[{timestamp}] {msg}"
+        # [UPDATED] No icon
+        full_msg = f"{msg}"
         if self.log_callback: self.log_callback(full_msg)
         else: print(full_msg)
 
     def check_stop(self):
         if self.stop_flag:
-            self.log("🛑 ĐÃ DỪNG KHẨN CẤP!")
+            self.log("ĐÃ DỪNG KHẨN CẤP!")
             raise Exception("UserStopped")
 
     def setup_tiktok_login(self): return browser.setup_driver(self.settings, "https://www.tiktok.com/login")
 
+    # [FIX] Added missing method
     def check_api_token(self, page_id, token):
         return uploader.check_token_validity(page_id, token)
 
     def save_cookie_profile(self, driver, name):
         res = browser.save_cookie(driver, name)
-        if res: self.log(f"✅ Đã lưu cookie [{name}]")
+        if res: self.log(f"Đã lưu cookie [{name}]")
         return res
 
     def run_tiktok_scraper(self, tags, num, cat, sub, profile):
         if profile: self.settings["current_tiktok_profile"] = profile
         scraper.run(self.settings, tags, num, cat, sub, self.check_stop, self.log)
 
-    # [NEW] Helper lấy duration
     def get_video_duration(self, path):
         try:
             clip = VideoFileClip(str(path))
@@ -73,7 +72,6 @@ class AutomationBackend:
                         results.append({
                             "data": link, "status": "Chờ tải",
                             "scan_time": scan_time, "thumb": None,
-                            # [NEW] Truyền thêm Cat/Sub
                             "cat_sub": f"{cat} > {sub}"
                         })
             except: pass
@@ -97,12 +95,9 @@ class AutomationBackend:
             edit_params = ""
 
             if edited_dir.exists():
-                # Tìm file edit tương ứng
                 for ed_f in edited_dir.glob(f"{f.stem}_ed*.mp4"):
                     is_edited = True
                     edit_time = datetime.fromtimestamp(ed_f.stat().st_mtime).strftime("%d/%m %H:%M")
-                    # [TODO] Lưu params vào file log edit riêng để đọc lại chính xác.
-                    # Hiện tại giả lập text params nếu chưa có file log
                     edit_params = "Speed: 1.05x, Crop: 10px"
                     break
 
@@ -144,18 +139,19 @@ class AutomationBackend:
         for f in files:
             stat = uploaded_map.get(f.name)
             display_status = "ĐÃ CHỈNH SỬA (CHƯA ĐĂNG)"
+            pub_time = None
 
             if stat:
                 status_code = stat[1]
                 raw_time = stat[2] if len(stat) > 2 else ""
-                if status_code == "SCHEDULED": display_status = f"⏳ Lịch: {raw_time}"
-                elif status_code == "PUBLISHED": display_status = "✅ ĐÃ ĐĂNG NGAY"
+                if status_code == "SCHEDULED": display_status = f"⏳ LỊCH ĐĂNG: {raw_time}"
+                elif status_code == "PUBLISHED": display_status = "✅ ĐÃ ĐĂNG"
+                pub_time = raw_time
 
             original_stem = f.name.split("_ed")[0]
             original_path = paths["video_dir"] / (original_stem + ".mp4")
             thumb_path = paths["thumb_dir"] / (original_stem + ".jpg")
 
-            # [NEW] Params giả định
             edit_info = "Speed: 1.05x, Crop: 10px, Gamma: 1.1"
 
             results.append({
@@ -168,16 +164,17 @@ class AutomationBackend:
                 "original_path": str(original_path) if original_path.exists() else None,
                 "duration": self.get_video_duration(f),
                 "cat_sub": f"{cat} > {sub}",
-                "edit_params": edit_info
+                "edit_params": edit_info,
+                "publish_time": pub_time
             })
         return results
 
     def process_download_queue(self, cat, sub, queue, cb):
         if not queue:
-            self.log("⚠️ Không có link!")
+            self.log("Không có link!")
             return
 
-        self.log(f"🚀 Tải {len(queue)} video...")
+        self.log(f"Bắt đầu tiến trình tải xuống {len(queue)} video")
         driver = None
         try:
             driver = browser.setup_driver(self.settings)
@@ -187,10 +184,10 @@ class AutomationBackend:
                 try: driver.quit()
                 except: pass
 
-    def batch_process_videos(self, file_paths, edit_settings):
+    # [FIX] Added status_cb for Auto Edit check
+    def batch_process_videos(self, file_paths, edit_settings, status_cb=None):
         if not file_paths: return []
         processed_files = []
-        self.log(f"🎞️ Xử lý {len(file_paths)} video...")
         first_path = Path(file_paths[0])
         output_dir = first_path.parent / "Edited"
         output_dir.mkdir(parents=True, exist_ok=True)
@@ -201,16 +198,23 @@ class AutomationBackend:
                 input_path = Path(input_path_str)
                 if not input_path.exists(): continue
 
-                # [NEW] Logic ghi đè: Xóa file edit cũ nếu có (dựa vào stem)
-                # Ở đây ta tạo file mới với timestamp để tránh lock file, file cũ coi như rác hoặc user tự xóa
+                # Update UI status
+                if status_cb: status_cb(str(input_path), "processing")
+                self.log(f"Đang edit video {input_path.name}")
+
                 suffix = "_ed"
                 new_name = f"{input_path.stem}{suffix}_{int(datetime.now().timestamp())}.mp4"
                 output_path = output_dir / new_name
 
+                # Call processor
                 success = video_processor.process_video(input_path, output_path, edit_settings, self.log)
-                if success: processed_files.append(str(output_path))
+                if success:
+                    processed_files.append(str(output_path))
+                    self.log(f"Đã sửa xong")
+
+                if status_cb: status_cb(str(input_path), "done")
+
             except Exception as e: self.log(f"Lỗi video {i}: {e}")
-        self.log(f"🎉 Xong: {len(processed_files)}/{len(file_paths)}")
         return processed_files
 
     def count_posts_on_date(self, cat, sub, date_str): return uploader.count_posts_on_date(cat, sub, date_str)
